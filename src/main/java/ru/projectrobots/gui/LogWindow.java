@@ -1,4 +1,8 @@
-package gui;
+package ru.projectrobots.gui;
+
+import ru.projectrobots.log.LogChangeListener;
+import ru.projectrobots.log.LogEntry;
+import ru.projectrobots.log.LogWindowSource;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -7,9 +11,6 @@ import java.awt.TextArea;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 
-import log.LogChangeListener;
-import log.LogEntry;
-import log.LogWindowSource;
 
 public class LogWindow extends JInternalFrame implements LogChangeListener
 {

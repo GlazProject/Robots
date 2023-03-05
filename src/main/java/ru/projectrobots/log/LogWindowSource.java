@@ -1,4 +1,4 @@
-package log;
+package ru.projectrobots.log;
 
 import java.util.ArrayList;
 import java.util.Collections;

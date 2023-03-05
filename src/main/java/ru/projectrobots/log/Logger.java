@@ -1,4 +1,4 @@
-package log;
+package ru.projectrobots.log;
 
 public final class Logger
 {

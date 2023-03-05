@@ -1,4 +1,6 @@
-package gui;
+package ru.projectrobots;
+
+import ru.projectrobots.gui.MainApplicationFrame;
 
 import java.awt.Frame;
 
