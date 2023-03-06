@@ -53,11 +53,9 @@ public class GameViewController {
         view.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                robot.setTargetPosition(e.getPoint());
-                view.repaint();
+            robot.setTargetPosition(e.getPoint());
+            view.repaint();
             }
         });
     }
-
-
 }

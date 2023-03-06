@@ -39,11 +39,15 @@ public class Robot {
     }
 
     public void setTargetPosition(Point point) {
+        if (!isPointInsideBoard(point)) return;
+
         targetPositionX = point.x;
         targetPositionY = point.y;
     }
 
     public void setRobotPosition(double x, double y) {
+        if (!isPointInsideBoard(x, y)) return;
+
         this.robotPositionX = x;
         this.robotPositionY = y;
     }
@@ -139,7 +143,15 @@ public class Robot {
     }
 
     public void setBoardSize(double width, double height) {
-        this.boardWidth = width - 20;
-        this.boardHeight = height - 45;
+        this.boardWidth = width - 10;
+        this.boardHeight = height - 5;
+    }
+
+    private boolean isPointInsideBoard(Point point) {
+        return point.x > 0 && point.x < boardWidth && point.y > 0 && point.y < boardHeight;
+    }
+
+    private boolean isPointInsideBoard(double x, double y) {
+        return x > 0 && x < boardWidth && y > 0 && y < boardHeight;
     }
 }

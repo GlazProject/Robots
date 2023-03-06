@@ -14,15 +14,13 @@ import static ru.projectrobots.core.ClosableView.closingPanelLogic;
 
 public class GameFrameController {
 
-    private final Robot robot;
     private final GameFrame view;
 
     private final GameViewController gameViewController;
 
     public GameFrameController(Robot _robot) {
-        this.robot = _robot;
-        gameViewController = new GameViewController(robot);
-        view = createGameWindow(robot);
+        gameViewController = new GameViewController(_robot);
+        view = createGameWindow(_robot);
     }
 
     public GameFrame getView() {
@@ -30,7 +28,6 @@ public class GameFrameController {
     }
 
     private GameFrame createGameWindow(Robot robot) {
-        // robot is sizeless when created so we need to set size at some point
         robot.setBoardSize(600, 800);
 
         GameFrame gameWindow = new GameFrame(gameViewController.getView());
@@ -49,7 +46,6 @@ public class GameFrameController {
             public void componentResized(ComponentEvent e) {
                 super.componentResized(e);
                 robot.setBoardSize(gameWindow.getWidth(), gameWindow.getHeight());
-
             }
         });
         return gameWindow;

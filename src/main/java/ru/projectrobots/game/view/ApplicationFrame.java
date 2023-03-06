@@ -42,5 +42,4 @@ public class ApplicationFrame extends JFrame {
         desktopPane.add(frame);
         frame.setVisible(true);
     }
-
 }

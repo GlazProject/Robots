@@ -10,7 +10,6 @@ public class ClosableView {
 
         if (getResultForOption(event, options) == 0) {
             event.getInternalFrame().setVisible(false);
-
         }
         event.getInternalFrame().setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     }

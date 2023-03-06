@@ -39,5 +39,4 @@ public class GameView extends JPanel {
         );
         painter.drawTarget(robot.getTargetPositionX(), robot.getTargetPositionY());
     }
-
 }
