@@ -1,12 +1,13 @@
 package ru.projectrobots.game.utils;
 
-import ru.projectrobots.game.view.ApplicationFrame;
+import ru.projectrobots.game.ApplicationFrame;
 import ru.projectrobots.log.Logger;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 
 public class MenuFactory {
+
     private final ApplicationFrame applicationFrame;
 
     public MenuFactory(ApplicationFrame frame) {

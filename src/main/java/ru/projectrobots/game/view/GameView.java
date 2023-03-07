@@ -1,42 +1,48 @@
 package ru.projectrobots.game.view;
 
+import ru.projectrobots.core.events.ViewUpdateEvent;
+import ru.projectrobots.core.view.UpdatableView;
+import ru.projectrobots.di.container.GameDataContainer;
 import ru.projectrobots.game.model.Robot;
-import ru.projectrobots.game.utils.Painter;
+import ru.projectrobots.game.model.Target;
+import ru.projectrobots.game.model.drawer.RobotDrawer;
+import ru.projectrobots.game.model.drawer.TargetDrawer;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class GameView extends JPanel {
+import static ru.projectrobots.core.events.ViewUpdateEvent.REDRAW_MODEL_EVENT;
+
+public class GameView extends JPanel implements UpdatableView {
 
     private final Robot robot;
+    private final Target target;
+    private final RobotDrawer robotDrawer;
+    private final TargetDrawer targetDrawer;
 
-    public GameView(Robot _robot) {
-        robot = _robot;
+    public GameView(GameDataContainer dataContainer) {
+        robot = dataContainer.robot();
+        target = dataContainer.target();
+        robotDrawer = dataContainer.robotDrawer();
+        targetDrawer = dataContainer.targetDrawer();
+
         setDoubleBuffered(true);
     }
 
-    public void onRedrawEvent() {
+    @Override
+    public void onUpdate(ViewUpdateEvent event) {
+        if (event == REDRAW_MODEL_EVENT) onRedrawEvent();
+    }
+
+    private void onRedrawEvent() {
         EventQueue.invokeLater(this::repaint);
-    }
-
-    public void onModelUpdateEvent() {
-        robot.update();
-    }
-
-    private static int round(double value) {
-        return (int) (value + 0.5);
     }
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
-        Painter painter = new Painter(g2d);
-        painter.drawRobot(
-            round(robot.getRobotPositionX()),
-            round(robot.getRobotPositionY()),
-            robot.getRobotDirection()
-        );
-        painter.drawTarget(robot.getTargetPositionX(), robot.getTargetPositionY());
+        robotDrawer.drawRobot(g2d, robot);
+        targetDrawer.drawTarget(g2d, target);
     }
 }

@@ -1,4 +1,4 @@
-package ru.projectrobots.core;
+package ru.projectrobots.core.view;
 
 import javax.swing.*;
 import javax.swing.event.InternalFrameEvent;

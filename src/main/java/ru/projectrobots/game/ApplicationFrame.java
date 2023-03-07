@@ -1,8 +1,9 @@
-package ru.projectrobots.game.view;
+package ru.projectrobots.game;
 
-import ru.projectrobots.game.controller.GameFrameController;
-import ru.projectrobots.game.model.Robot;
+import ru.projectrobots.di.container.GameDataContainer;
 import ru.projectrobots.game.utils.MenuFactory;
+import ru.projectrobots.game.view.GameFrame;
+import ru.projectrobots.game.viewmodel.GameFrameViewModel;
 import ru.projectrobots.log.Logger;
 import ru.projectrobots.log.view.LogView;
 
@@ -11,9 +12,10 @@ import java.awt.*;
 
 
 public class ApplicationFrame extends JFrame {
+
     private final JDesktopPane desktopPane = new JDesktopPane();
 
-    public ApplicationFrame() {
+    public ApplicationFrame(GameDataContainer data) {
         int inset = 50;
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setBounds(
@@ -25,11 +27,10 @@ public class ApplicationFrame extends JFrame {
 
         setContentPane(desktopPane);
 
-
         LogView logView = new LogView(Logger.getLogDelegate()).createLogView();
         addWindow(logView);
 
-        GameFrame gameWindow = new GameFrameController(new Robot()).getView();
+        GameFrame gameWindow = new GameFrameViewModel(data).getView();
         addWindow(gameWindow);
 
         MenuFactory menuFactory = new MenuFactory(this);
