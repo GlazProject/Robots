@@ -4,6 +4,7 @@ package ru.projectrobots.di.container;
 
 import ru.projectrobots.game.model.Robot;
 import ru.projectrobots.game.model.Target;
+import ru.projectrobots.game.model.drawer.GroundDrawer;
 import ru.projectrobots.game.model.drawer.RobotDrawer;
 import ru.projectrobots.game.model.drawer.TargetDrawer;
 
@@ -11,5 +12,6 @@ public record GameDataContainer(
     Robot robot,
     RobotDrawer robotDrawer,
     Target target,
-    TargetDrawer targetDrawer
+    TargetDrawer targetDrawer,
+    GroundDrawer groundDrawer
 ) {}
