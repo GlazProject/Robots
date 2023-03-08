@@ -1,28 +1,27 @@
 package ru.projectrobots.log;
 
-public final class Logger
-{
-    private static final LogWindowSource defaultLogSource;
+import ru.projectrobots.log.delegate.LogDelegate;
+import ru.projectrobots.log.model.LogLevel;
+
+public final class Logger {
+    private static final LogDelegate logDelegate;
+
     static {
-        defaultLogSource = new LogWindowSource(100);
-    }
-    
-    private Logger()
-    {
+        logDelegate = new LogDelegate(20);
     }
 
-    public static void debug(String strMessage)
-    {
-        defaultLogSource.append(LogLevel.Debug, strMessage);
-    }
-    
-    public static void error(String strMessage)
-    {
-        defaultLogSource.append(LogLevel.Error, strMessage);
+    private Logger() {
     }
 
-    public static LogWindowSource getDefaultLogSource()
-    {
-        return defaultLogSource;
+    public static void debug(String strMessage) {
+        logDelegate.addEntry(LogLevel.Debug, strMessage);
+    }
+
+    public static void error(String strMessage) {
+        logDelegate.addEntry(LogLevel.Error, strMessage);
+    }
+
+    public static LogDelegate getLogDelegate() {
+        return logDelegate;
     }
 }
