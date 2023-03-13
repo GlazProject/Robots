@@ -93,8 +93,8 @@ public class RobotDrawer extends Drawer {
         int border = robot.getBorder();
 
         AffineTransform t = AffineTransform.getRotateInstance(robot.getRobotDirection(), x, y);
-        t.scale(1.25, 1);
         AffineTransform oldTransform = g2d.getTransform();
+        t.scale(oldTransform.getScaleX(), oldTransform.getScaleY());
         g2d.setTransform(t);
 
         g2d.setColor(Color.RED);
