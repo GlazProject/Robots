@@ -93,6 +93,7 @@ public class RobotDrawer extends Drawer {
         int border = robot.getBorder();
 
         AffineTransform t = AffineTransform.getRotateInstance(robot.getRobotDirection(), x, y);
+        t.scale(1.25, 1);
         AffineTransform oldTransform = g2d.getTransform();
         g2d.setTransform(t);
 
