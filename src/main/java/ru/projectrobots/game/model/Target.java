@@ -28,6 +28,14 @@ public class Target {
         return y;
     }
 
+    public boolean isCollected(){
+        return collected;
+    }
+
+    public void setCollected(){
+        collected = true;
+    }
+
     public void setTargetPosition(Point point) {
         if (!isPointInsideBoard(point)) return;
 
@@ -49,13 +57,6 @@ public class Target {
         this.boardHeight = height - 5;
 
         putTargetInBord();
-    }
-    public boolean isCollected(){
-        return collected;
-    }
-
-    public void setCollected(){
-        collected = true;
     }
 
     private boolean isPointInsideBoard(Point point) {

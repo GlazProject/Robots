@@ -27,19 +27,12 @@ public class TargetDrawer extends Drawer  {
             counterForHit = 0;
         }
 
-//        AffineTransform t = AffineTransform.getRotateInstance(0, 0, 0);
-//        t = AffineTransform.getTranslateInstance(10,10);
-//        AffineTransform oldTransform = g2d.getTransform();
-//        g2d.setTransform(t);
-
         Image image = getImageOrNull(TARGET);
         if (image == null) drawDefaultTarget(g2d, target);
         else g2d.drawImage(image,
                 x - size, y - size,
                 size * 2, size * 2,
                 null);
-
-//        g2d.setTransform(oldTransform);
     }
 
     private void drawDefaultTarget(Graphics2D g2d, Target target){
