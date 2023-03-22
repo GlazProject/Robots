@@ -2,6 +2,7 @@ package ru.projectrobots.game.viewmodel;
 
 /* created by zzemlyanaya on 05/03/2023 */
 
+import ru.projectrobots.core.events.ViewUpdateEvent;
 import ru.projectrobots.di.container.GameDataContainer;
 import ru.projectrobots.game.model.Robot;
 import ru.projectrobots.game.model.Target;
@@ -49,6 +50,7 @@ public class GameFrameViewModel {
                 super.componentResized(e);
                 robot.setBoardSize(gameWindow.getWidth(), gameWindow.getHeight());
                 target.setBoardSize(gameWindow.getWidth(), gameWindow.getHeight());
+                gameViewModel.getView().onUpdate(ViewUpdateEvent.REDRAW_MODEL_EVENT);
             }
         });
         return gameWindow;
