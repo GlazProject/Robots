@@ -24,7 +24,7 @@ public class RobotsProgram {
         TargetDrawer targetDrawer = new TargetDrawer();
         GroundDrawer groundDrawer = new GroundDrawer();
         Robot robot = new Robot(10, 10)
-                .setRobotHeight(70)
+                .setRobotHeight(100)
                 .setRobotWidth(50);
         RobotDrawer robotDrawer = new RobotDrawer();
 

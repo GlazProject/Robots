@@ -2,14 +2,14 @@ package ru.projectrobots.game.model.drawer;
 
 /* created by zzemlyanaya on 07/03/2023 */
 
-import org.jetbrains.annotations.Nullable;
 import ru.projectrobots.core.drawer.Drawer;
-import ru.projectrobots.di.container.ResourceManager;
+import ru.projectrobots.resources.ResourceManager;
+import ru.projectrobots.resources.ResourceProvider;
 import ru.projectrobots.game.model.Robot;
 import ru.projectrobots.game.model.RobotState;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
+import java.io.FileNotFoundException;
 
 public class RobotDrawer extends Drawer {
     private enum Direction {
@@ -31,26 +31,26 @@ public class RobotDrawer extends Drawer {
     private int nextMovingFrame = 0;
     private Direction lastMovingDirection = Direction.Front;
 
-    public void drawRobot(Graphics2D g2d, Robot robot) {
+    public void drawRobot(Graphics2D g2d, Robot robot) throws FileNotFoundException, NoSuchFieldException {
         if (robot.getRobotState() == RobotState.STAYING)
             drawStayingRobot(g2d, robot);
         else
             drawMovingRobot(g2d, robot);
     }
 
-    private void drawStayingRobot(Graphics2D g2d, Robot robot){
-        Image image = getImageOrNull(
+    private void drawStayingRobot(Graphics2D g2d, Robot robot) throws FileNotFoundException, NoSuchFieldException {
+        Image image = ResourceProvider.getImage(
                 switch (get4AxisDirection(robot.getRobotDirection())) {
                     case Left -> LEFT_STAYING;
                     case Right -> RIGHT_STAYING;
                     case Front -> FRONT_STAYING;
                     case Back -> BACK_STAYING;
-                });
+                }, true, false);
 
-        drawRobot(image, g2d, robot);
+        drawImage(image, robot, g2d);
     }
 
-    private void drawMovingRobot(Graphics2D g2d, Robot robot){
+    private void drawMovingRobot(Graphics2D g2d, Robot robot) throws FileNotFoundException, NoSuchFieldException {
         Direction direction = get4AxisDirection(robot.getRobotDirection());
         String action = switch (direction){
             case Left -> LEFT_MOVING;
@@ -64,19 +64,11 @@ public class RobotDrawer extends Drawer {
             lastMovingDirection = direction;
         }
 
-        Image image = getImageOrNull(action + "." + ++nextMovingFrame);
-        drawRobot(image, g2d, robot);
+        Image image = ResourceProvider.getImage(action + "." + ++nextMovingFrame, true, false);
+        drawImage(image, robot, g2d);
 
         int totalFramesCount = ResourceManager.getFramesCount(action);
         nextMovingFrame %= totalFramesCount;
-    }
-
-    private void drawRobot(@Nullable Image image, Graphics2D g2d, Robot robot){
-        if (image == null) drawDefaultRobot(g2d, robot);
-        else g2d.drawImage(image,
-                robot.getX() - robot.getRobotWidth() / 2, robot.getY() - robot.getRobotHeight() / 2,
-                robot.getRobotWidth(), robot.getRobotHeight(),
-                null);
     }
 
     private Direction get4AxisDirection(double angle){
@@ -87,25 +79,10 @@ public class RobotDrawer extends Drawer {
         return Direction.Back;
     }
 
-    private void drawDefaultRobot(Graphics2D g2d, Robot robot){
-        int x = robot.getX();
-        int y = robot.getY();
-        int border = robot.getBorder();
-
-        AffineTransform t = AffineTransform.getRotateInstance(robot.getRobotDirection(), x, y);
-        AffineTransform oldTransform = g2d.getTransform();
-        t.scale(oldTransform.getScaleX(), oldTransform.getScaleY());
-        g2d.setTransform(t);
-
-        g2d.setColor(Color.RED);
-        fillOval(g2d, x, y, robot.getRobotHeight(), robot.getRobotWidth());
-        g2d.setColor(Color.BLACK);
-        drawOval(g2d, x, y, robot.getRobotHeight(), robot.getRobotWidth());
-        g2d.setColor(Color.WHITE);
-        fillOval(g2d, x + border*2, y, border, border);
-        g2d.setColor(Color.BLACK);
-        drawOval(g2d, x + border*2, y, border, border);
-
-        g2d.setTransform(oldTransform);
+    private void drawImage(Image image, Robot robot, Graphics2D g2d){
+        g2d.drawImage(image,
+                robot.getX() - robot.getRobotWidth() / 2, robot.getY() - robot.getRobotHeight() / 2,
+                robot.getRobotWidth(), robot.getRobotHeight(),
+                null);
     }
 }
