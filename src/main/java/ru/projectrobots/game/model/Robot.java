@@ -1,17 +1,17 @@
 package ru.projectrobots.game.model;
 
 public class Robot {
-
     private int robotHeight = 50;
     private int robotWidth = 70;
     private int border = 5;
 
     private volatile double x;
     private volatile double y;
+    private volatile RobotState robotState;
     private double robotDirection = 0;
 
-    private volatile double boardWidth = 100;
-    private volatile double boardHeight = 100;
+    private volatile int boardWidth = 100;
+    private volatile int boardHeight = 100;
 
     private static final double MAX_VELOCITY = 0.1;
     private static final double MAX_ANGULAR_VELOCITY = 0.001;
@@ -25,16 +25,18 @@ public class Robot {
         return robotHeight;
     }
 
-    public void setRobotHeight(int robotHeight) {
+    public Robot setRobotHeight(int robotHeight) {
         this.robotHeight = robotHeight;
+        return this;
     }
 
     public int getRobotWidth() {
         return robotWidth;
     }
 
-    public void setRobotWidth(int robotWidth) {
+    public Robot setRobotWidth(int robotWidth) {
         this.robotWidth = robotWidth;
+        return this;
     }
 
     public int getBorder() {
@@ -64,12 +66,20 @@ public class Robot {
         this.y = y;
     }
 
+    public RobotState getRobotState(){
+        return robotState;
+    }
+
     public void update(Target target) {
         if (distance(
             target.getX(), target.getY(),
-            x, y) < 0.5)
+            x, y) < target.getSize() / 2d){
+            target.setCollected();
+            robotState = RobotState.STAYING;
             return;
+        }
 
+        robotState = RobotState.MOVING;
         double angleToTarget = angleTo(
             x,
             y,
@@ -155,12 +165,20 @@ public class Robot {
         return (int) (value + 0.5);
     }
 
-    public void setBoardSize(double width, double height) {
+    public void setBoardSize(int width, int height) {
         this.boardWidth = width - 10;
         this.boardHeight = height - 5;
+
+        putRobotInBord();
     }
 
     private boolean isPointInsideBoard(double x, double y) {
-        return x > 0 && x < boardWidth && y > 0 && y < boardHeight;
+        return x > border && x < boardWidth - border && y > border && y < boardHeight - border;
+    }
+
+    private void putRobotInBord(){
+        if (isPointInsideBoard(x, y)) return;
+        if (x > boardWidth - border) x = boardWidth - border;
+        if (y > boardHeight - border) y = boardHeight - border;
     }
 }

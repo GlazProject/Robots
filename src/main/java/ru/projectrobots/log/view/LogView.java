@@ -10,7 +10,7 @@ import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import java.awt.*;
 
-import static ru.projectrobots.core.view.ClosableView.closingPanelLogic;
+import static ru.projectrobots.core.view.DialogFactory.showCloseDialog;
 
 
 public class LogView extends JInternalFrame implements LogChangeListener {
@@ -65,7 +65,7 @@ public class LogView extends JInternalFrame implements LogChangeListener {
             @Override
             public void internalFrameClosing(InternalFrameEvent event) {
                 super.internalFrameClosing(event);
-                closingPanelLogic(event);
+                showCloseDialog(event);
                 unregisterListener();
             }
         });
