@@ -32,16 +32,10 @@ public class RobotDrawer extends Drawer {
     private Direction lastMovingDirection = Direction.Front;
 
     public void drawRobot(Graphics2D g2d, Robot robot) {
-//        AffineTransform t = AffineTransform.getRotateInstance(0, robot.getX(), robot.getY());
-        AffineTransform oldTransform = g2d.getTransform();
-//        g2d.setTransform(t);
-
         if (robot.getRobotState() == RobotState.STAYING)
             drawStayingRobot(g2d, robot);
         else
             drawMovingRobot(g2d, robot);
-
-        g2d.setTransform(oldTransform);
     }
 
     private void drawStayingRobot(Graphics2D g2d, Robot robot){
@@ -99,7 +93,9 @@ public class RobotDrawer extends Drawer {
         int border = robot.getBorder();
 
         AffineTransform t = AffineTransform.getRotateInstance(robot.getRobotDirection(), x, y);
+        AffineTransform oldTransform = g2d.getTransform();
         g2d.setTransform(t);
+
         g2d.setColor(Color.RED);
         fillOval(g2d, x, y, robot.getRobotHeight(), robot.getRobotWidth());
         g2d.setColor(Color.BLACK);
@@ -108,5 +104,7 @@ public class RobotDrawer extends Drawer {
         fillOval(g2d, x + border*2, y, border, border);
         g2d.setColor(Color.BLACK);
         drawOval(g2d, x + border*2, y, border, border);
+
+        g2d.setTransform(oldTransform);
     }
 }
