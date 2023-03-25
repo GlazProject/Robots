@@ -1,15 +1,15 @@
 package ru.projectrobots;
 
+import ru.projectrobots.core.bus.GameEventBus;
 import ru.projectrobots.di.container.GameDataContainer;
 import ru.projectrobots.game.ApplicationFrame;
+import ru.projectrobots.game.model.Fireball;
 import ru.projectrobots.game.model.Robot;
 import ru.projectrobots.game.model.Target;
-import ru.projectrobots.game.model.drawer.GroundDrawer;
-import ru.projectrobots.game.model.drawer.RobotDrawer;
-import ru.projectrobots.game.model.drawer.TargetDrawer;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class RobotsProgram {
 
@@ -21,17 +21,17 @@ public class RobotsProgram {
         }
 
         Target target = new Target(100, 100);
-        TargetDrawer targetDrawer = new TargetDrawer();
-        GroundDrawer groundDrawer = new GroundDrawer();
         Robot robot = new Robot(10, 10)
                 .setRobotHeight(100)
                 .setRobotWidth(50);
-        RobotDrawer robotDrawer = new RobotDrawer();
+        ArrayList<Fireball> fireballs = new ArrayList<>();
 
-        GameDataContainer dataContainer = new GameDataContainer(robot, robotDrawer, target, targetDrawer, groundDrawer);
+        GameDataContainer dataContainer = new GameDataContainer(robot, target, fireballs);
+
+        GameEventBus eventBus = new GameEventBus();
 
         SwingUtilities.invokeLater(() -> {
-            ApplicationFrame frame = new ApplicationFrame(dataContainer);
+            ApplicationFrame frame = new ApplicationFrame(dataContainer, eventBus);
             frame.pack();
             frame.setVisible(true);
             frame.setExtendedState(Frame.MAXIMIZED_BOTH);

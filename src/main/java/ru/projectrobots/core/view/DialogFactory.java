@@ -3,13 +3,15 @@ package ru.projectrobots.core.view;
 import javax.swing.*;
 import javax.swing.event.InternalFrameEvent;
 import java.awt.*;
+import java.util.function.Consumer;
 
 public class DialogFactory {
-    public static void showCloseDialog(InternalFrameEvent event) {
+    public static void showCloseDialog(InternalFrameEvent event, Consumer<Object> onClosedCallback) {
         String[] options = {"Да", "Нет"};
 
         if (getResultForOption(event, options) == 0) {
             event.getInternalFrame().setVisible(false);
+            onClosedCallback.accept(event);
         }
         event.getInternalFrame().setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     }
