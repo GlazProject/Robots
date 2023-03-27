@@ -9,9 +9,7 @@ import ru.projectrobots.core.events.GameEvent;
 public class GameEventBus {
 
     private final PublishSubject<GameEvent> subject = PublishSubject.create();
-
-    public GameEventBus() { }
-
+    
     public void sendData(GameEvent event) {
         subject.onNext(event);
     }
