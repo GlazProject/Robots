@@ -58,15 +58,13 @@ public class LogView extends JInternalFrame implements LogChangeListener {
     }
 
     public LogView createLogView() {
-        setLocation(10, 10);
-        setSize(500, 800);
+        setPreferredSize(new Dimension(400, 800));
 
         this.addInternalFrameListener(new InternalFrameAdapter() {
             @Override
             public void internalFrameClosing(InternalFrameEvent event) {
                 super.internalFrameClosing(event);
-                showCloseDialog(event);
-                unregisterListener();
+                showCloseDialog(event, t -> unregisterListener());
             }
         });
 

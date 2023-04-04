@@ -1,20 +1,11 @@
 package ru.projectrobots.game.model;
 
-public class Robot {
-    private int robotHeight = 50;
-    private int robotWidth = 70;
-    private int border = 5;
+import ru.projectrobots.core.model.BaseModel;
 
-    private volatile double x;
-    private volatile double y;
+public class Robot extends BaseModel {
+
     private volatile RobotState robotState;
     private double robotDirection = 0;
-
-    private volatile int boardWidth = 100;
-    private volatile int boardHeight = 100;
-
-    private static final double MAX_VELOCITY = 0.1;
-    private static final double MAX_ANGULAR_VELOCITY = 0.001;
 
     public Robot(double x, double y) {
         this.x = x;
@@ -22,37 +13,21 @@ public class Robot {
     }
 
     public int getRobotHeight() {
-        return robotHeight;
+        return modelHeight;
     }
 
     public Robot setRobotHeight(int robotHeight) {
-        this.robotHeight = robotHeight;
+        this.modelHeight = robotHeight;
         return this;
     }
 
     public int getRobotWidth() {
-        return robotWidth;
+        return modelWidth;
     }
 
     public Robot setRobotWidth(int robotWidth) {
-        this.robotWidth = robotWidth;
+        this.modelWidth = robotWidth;
         return this;
-    }
-
-    public int getBorder() {
-        return border;
-    }
-
-    public void setBorder(int border) {
-        this.border = border;
-    }
-
-    public int getX() {
-        return round(this.x);
-    }
-
-    public int getY() {
-        return round(this.y);
     }
 
     public double getRobotDirection() {
@@ -70,10 +45,13 @@ public class Robot {
         return robotState;
     }
 
+    public void setRobotState(RobotState robotState) {
+        this.robotState = robotState;
+    }
+
     public void update(Target target) {
-        if (distance(
-            target.getX(), target.getY(),
-            x, y) < target.getSize() / 2d){
+        if (target.isCollected()
+            || distance(target.getX(), target.getY(), x, y) < target.getSize() / 2d) {
             target.setCollected();
             robotState = RobotState.STAYING;
             return;
@@ -92,27 +70,6 @@ public class Robot {
         if (angleToTarget < robotDirection) angularVelocity = -MAX_ANGULAR_VELOCITY;
 
         moveRobot(angularVelocity);
-    }
-
-
-    private static double distance(double x1, double y1,
-                                   double x2, double y2) {
-        double diffX = x1 - x2;
-        double diffY = y1 - y2;
-        return Math.sqrt(diffX * diffX + diffY * diffY);
-    }
-
-    private static double angleTo(double fromX, double fromY,
-                                  double toX, double toY) {
-        double diffX = toX - fromX;
-        double diffY = toY - fromY;
-        return asNormalizedRadians(Math.atan2(diffY, diffX));
-    }
-
-    private static double applyLimits(double value, double min, double max) {
-        if (value < min) return min;
-
-        return Math.min(value, max);
     }
 
     private double getNewX(double velocity, double angularVelocity) {
@@ -152,33 +109,5 @@ public class Robot {
         }
 
         setRobotPosition(newX, newY);
-    }
-
-    private static double asNormalizedRadians(double angle) {
-        while (angle < 0) angle += 2 * Math.PI;
-        while (angle >= 2 * Math.PI) angle -= 2 * Math.PI;
-
-        return angle;
-    }
-
-    private static int round(double value) {
-        return (int) (value + 0.5);
-    }
-
-    public void setBoardSize(int width, int height) {
-        this.boardWidth = width - 10;
-        this.boardHeight = height - 5;
-
-        putRobotInBord();
-    }
-
-    private boolean isPointInsideBoard(double x, double y) {
-        return x > border && x < boardWidth - border && y > border && y < boardHeight - border;
-    }
-
-    private void putRobotInBord(){
-        if (isPointInsideBoard(x, y)) return;
-        if (x > boardWidth - border) x = boardWidth - border;
-        if (y > boardHeight - border) y = boardHeight - border;
     }
 }
