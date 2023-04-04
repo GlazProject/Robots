@@ -16,8 +16,6 @@ import java.awt.*;
 
 public class ApplicationFrame extends JFrame {
 
-    private final JDesktopPane desktopPane = new JDesktopPane();
-
     public ApplicationFrame(GameDataContainer data, GameEventBus eventBus) {
         int inset = 50;
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -28,8 +26,7 @@ public class ApplicationFrame extends JFrame {
             screenSize.height - inset * 2
         );
 
-        desktopPane.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
-        setContentPane(desktopPane);
+        setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
 
         ActionsFrame actionsFrame = new ActionFrameViewModel(eventBus).getView();
         addWindow(actionsFrame);
@@ -51,7 +48,7 @@ public class ApplicationFrame extends JFrame {
 
     protected void addWindow(JInternalFrame frame) {
         frame.setAlignmentY(Component.TOP_ALIGNMENT);
-        desktopPane.add(frame);
         frame.setVisible(true);
+        add(frame);
     }
 }
