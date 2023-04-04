@@ -19,7 +19,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Random;
 
 public class GameViewModel {
 
@@ -27,8 +26,6 @@ public class GameViewModel {
     private final Target target;
     private final ArrayList<Fireball> fireballs;
     private final GameView view;
-
-    Random rnd = new Random();
 
     private final GameEventBus eventBus;
     private final CompositeDisposable disposable = new CompositeDisposable();
@@ -84,22 +81,7 @@ public class GameViewModel {
     }
 
     private void sendFireball() {
-        Fireball fireball = new Fireball(0, 0);
-        fireball.setBoardSize(robot.getBoardWidth(), robot.getBoardHeight());
-
-        double x = fireball.getModelWidth() / 2.0;
-        double y = view.getHeight() * rnd.nextDouble();
-        double v = 0.9*rnd.nextDouble()+0.2;
-        fireball.setVelocity(v);
-
-        if (rnd.nextBoolean()) {
-            fireball.setLTR(true);
-            fireball.setPosition(x, y);
-        } else {
-            fireball.setLTR(false);
-            fireball.setPosition(view.getWidth()-x, y);
-        }
-
+        Fireball fireball = Fireball.generateFireball(robot.getBoardWidth(), robot.getBoardHeight());
         fireballs.add(fireball);
     }
 

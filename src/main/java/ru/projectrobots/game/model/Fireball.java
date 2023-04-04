@@ -4,14 +4,20 @@ package ru.projectrobots.game.model;
 
 import ru.projectrobots.core.model.BaseModel;
 
+import java.util.Random;
+import java.util.UUID;
+
 public class Fireball extends BaseModel {
+
+    private final static Random rnd = new Random();
+
+    private String id;
 
     private final double speed = 5;
     private double velocity = 0.2;
 
     private boolean isLTR = true;
     private boolean isFinished = false;
-    private int lastFrame = 1;
 
     public Fireball(double x, double y) {
         this.x = x;
@@ -49,12 +55,8 @@ public class Fireball extends BaseModel {
         isFinished = finished;
     }
 
-    public int getLastFrame() {
-        return lastFrame;
-    }
-
-    public void setLastFrame(int lastFrame) {
-        this.lastFrame = lastFrame;
+    public String getId() {
+        return id;
     }
 
     public void setPosition(double x, double y) {
@@ -66,6 +68,28 @@ public class Fireball extends BaseModel {
         this.x = x;
         this.y = y;
         isFinished = false;
+    }
+
+    public static Fireball generateFireball(int boardWidth, int boardHeight) {
+        Fireball fireball = new Fireball(0, 0);
+        fireball.setBoardSize(boardWidth, boardHeight);
+
+        double x = fireball.getModelWidth() / 2.0;
+        double y = boardHeight * rnd.nextDouble();
+        double v = 0.9*rnd.nextDouble()+0.2;
+        fireball.setVelocity(v);
+
+        if (rnd.nextBoolean()) {
+            fireball.setLTR(true);
+            fireball.setPosition(x, y);
+        } else {
+            fireball.setLTR(false);
+            fireball.setPosition(boardWidth-x, y);
+        }
+
+        fireball.id = UUID.randomUUID().toString();
+
+        return fireball;
     }
 
     public void update(Target target, Robot robot) {

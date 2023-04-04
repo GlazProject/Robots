@@ -10,17 +10,30 @@ import ru.projectrobots.resources.ResourceProvider;
 import java.awt.*;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class FireballDrawer extends Drawer {
 
     private static final String LEFT = "fireball.left";
     private static final String RIGHT = "fireball.right";
 
+    private final HashMap<String, Integer> nextFrames = new HashMap<>();
+
+    private int getNextFrame(Fireball fireball) {
+        Integer frame = nextFrames.get(fireball.getId());
+        if (frame == null) {
+            nextFrames.put(fireball.getId(), 1);
+            frame = 1;
+        }
+
+        return frame;
+    }
+
     public void drawFireball(Graphics2D g2d, Fireball fireball) throws FileNotFoundException, NoSuchFieldException {
         if (fireball.isFinished()) return;
 
         String action = fireball.isLTR() ? RIGHT : LEFT;
-        int nextFrame = fireball.getLastFrame() + 1;
+        int nextFrame = getNextFrame(fireball) + 1;
 
         Image image = ResourceProvider.getImage(action + "." + nextFrame, true, false);
         g2d.drawImage(image,
@@ -30,7 +43,7 @@ public class FireballDrawer extends Drawer {
 
         int totalFramesCount = ResourceManager.getFramesCount(action);
         nextFrame %= totalFramesCount;
-        fireball.setLastFrame(nextFrame);
+        nextFrames.put(fireball.getId(), nextFrame);
     }
 
     public void drawAllFireballs(Graphics2D g2d, ArrayList<Fireball> fireballs) throws FileNotFoundException, NoSuchFieldException {
