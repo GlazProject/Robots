@@ -15,8 +15,8 @@ public class RobotDrawer extends Drawer {
     private enum Direction {
         Left,
         Right,
-        Front,
-        Back
+        Up,
+        Down
     }
 
     private static final String FRONT_STAYING = "robot.front.staying";
@@ -29,13 +29,23 @@ public class RobotDrawer extends Drawer {
     private static final String RIGHT_MOVING = "robot.right.moving";
 
     private int nextMovingFrame = 0;
-    private Direction lastMovingDirection = Direction.Front;
+    private Direction lastMovingDirection = Direction.Up;
 
     public void drawRobot(Graphics2D g2d, Robot robot) throws FileNotFoundException, NoSuchFieldException {
+        drawShadow(g2d, robot);
         if (robot.getRobotState() == RobotState.STAYING)
             drawStayingRobot(g2d, robot);
         else
             drawMovingRobot(g2d, robot);
+    }
+
+    private void drawShadow(Graphics2D g2d, Robot robot) {
+        g2d.setColor(new Color(41, 49, 51, 40));
+        g2d.fillOval(robot.getX() - robot.getRobotWidth(),
+                robot.getY() + robot.getRobotHeight() / 6,
+                (int)(robot.getRobotWidth() * 1.4),
+                (int)(robot.getRobotHeight() * 0.4)
+                );
     }
 
     private void drawStayingRobot(Graphics2D g2d, Robot robot) throws FileNotFoundException, NoSuchFieldException {
@@ -43,8 +53,8 @@ public class RobotDrawer extends Drawer {
                 switch (get4AxisDirection(robot.getRobotDirection())) {
                     case Left -> LEFT_STAYING;
                     case Right -> RIGHT_STAYING;
-                    case Front -> FRONT_STAYING;
-                    case Back -> BACK_STAYING;
+                    case Up -> BACK_STAYING;
+                    case Down -> FRONT_STAYING;
                 }, true, false);
 
         drawImage(image, robot, g2d);
@@ -55,8 +65,8 @@ public class RobotDrawer extends Drawer {
         String action = switch (direction){
             case Left -> LEFT_MOVING;
             case Right -> RIGHT_MOVING;
-            case Front -> FRONT_MOVING;
-            case Back -> BACK_MOVING;
+            case Up -> BACK_MOVING;
+            case Down -> FRONT_MOVING;
         };
 
         if (direction != lastMovingDirection){
@@ -73,10 +83,10 @@ public class RobotDrawer extends Drawer {
 
     private Direction get4AxisDirection(double angle){
         double sector = Math.PI / 8;
-        if (angle < sector || angle > sector * 13) return Direction.Right;
-        if (angle < sector * 7) return Direction.Front;
-        if (angle < sector * 11) return Direction.Left;
-        return Direction.Back;
+        if (angle < sector * 2 || angle > sector * 14) return Direction.Right;
+        if (angle < sector * 6) return Direction.Down;
+        if (angle < sector * 10) return Direction.Left;
+        return Direction.Up;
     }
 
     private void drawImage(Image image, Robot robot, Graphics2D g2d){
