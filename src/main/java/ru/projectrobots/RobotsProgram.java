@@ -6,6 +6,7 @@ import ru.projectrobots.game.ApplicationFrame;
 import ru.projectrobots.game.model.Fireball;
 import ru.projectrobots.game.model.Robot;
 import ru.projectrobots.game.model.Target;
+import ru.projectrobots.log.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,6 +26,7 @@ public class RobotsProgram {
                 .setRobotHeight(100)
                 .setRobotWidth(50);
         ArrayList<Fireball> fireballs = new ArrayList<>();
+        Logger.setIgnoreDebugMessages(true);
 
         GameDataContainer dataContainer = new GameDataContainer(robot, target, fireballs);
 
