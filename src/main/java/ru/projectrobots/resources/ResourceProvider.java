@@ -4,6 +4,7 @@ import org.jetbrains.annotations.Nullable;
 import ru.projectrobots.log.Logger;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -30,6 +31,20 @@ public class ResourceProvider {
         if (imageName.equals(DEFAULT_IMAGE))
             throw new FileNotFoundException(imagePath);
         return getImage(DEFAULT_IMAGE, true, false);
+    }
+
+    public static Icon getIconWithHeight(String iconName, int height) throws FileNotFoundException, NoSuchFieldException {
+        Image image = getImage(iconName, true, false);
+        double scale = 1.0 * height / image.getHeight(null);
+        int newWidth = (int)(image.getWidth(null) * scale);
+        Image scaledImage = image.getScaledInstance(newWidth, height, Image.SCALE_FAST);
+        return new ImageIcon(scaledImage);
+    }
+
+    public static Icon getIcon(String iconName, int width, int height) throws FileNotFoundException, NoSuchFieldException {
+        Image image = getImage(iconName, true, false);
+        Image scaledImage = image.getScaledInstance(width, height, Image.SCALE_FAST);
+        return new ImageIcon(scaledImage);
     }
 
     @Nullable

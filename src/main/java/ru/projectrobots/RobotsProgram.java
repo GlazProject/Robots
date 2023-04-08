@@ -2,11 +2,13 @@ package ru.projectrobots;
 
 import ru.projectrobots.core.bus.GameEventBus;
 import ru.projectrobots.di.container.GameDataContainer;
+import ru.projectrobots.di.container.GlobalSettings;
 import ru.projectrobots.game.ApplicationFrame;
 import ru.projectrobots.game.model.Fireball;
 import ru.projectrobots.game.model.Robot;
 import ru.projectrobots.game.model.Target;
 import ru.projectrobots.log.Logger;
+import ru.projectrobots.resources.ResourceManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,6 +31,8 @@ public class RobotsProgram {
         Logger.setIgnoreDebugMessages(true);
 
         GameDataContainer dataContainer = new GameDataContainer(robot, target, fireballs);
+
+        GlobalSettings.setDefaultSprites(ResourceManager.getGameEntities());
 
         GameEventBus eventBus = new GameEventBus();
 

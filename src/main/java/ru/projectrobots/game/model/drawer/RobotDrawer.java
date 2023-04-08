@@ -3,6 +3,8 @@ package ru.projectrobots.game.model.drawer;
 /* created by zzemlyanaya on 07/03/2023 */
 
 import ru.projectrobots.core.drawer.Drawer;
+import ru.projectrobots.di.container.GlobalSettings;
+import ru.projectrobots.game.model.Models;
 import ru.projectrobots.resources.ResourceManager;
 import ru.projectrobots.resources.ResourceProvider;
 import ru.projectrobots.game.model.Robot;
@@ -19,14 +21,14 @@ public class RobotDrawer extends Drawer {
         Down
     }
 
-    private static final String FRONT_STAYING = "robot.front.staying";
-    private static final String FRONT_MOVING = "robot.front.moving";
-    private static final String BACK_STAYING = "robot.back.staying";
-    private static final String BACK_MOVING = "robot.back.moving";
-    private static final String LEFT_STAYING = "robot.left.staying";
-    private static final String LEFT_MOVING = "robot.left.moving";
-    private static final String RIGHT_STAYING = "robot.right.staying";
-    private static final String RIGHT_MOVING = "robot.right.moving";
+    private static final String FRONT_STAYING = "front.staying";
+    private static final String FRONT_MOVING = "front.moving";
+    private static final String BACK_STAYING = "back.staying";
+    private static final String BACK_MOVING = "back.moving";
+    private static final String LEFT_STAYING = "left.staying";
+    private static final String LEFT_MOVING = "left.moving";
+    private static final String RIGHT_STAYING = "right.staying";
+    private static final String RIGHT_MOVING = "right.moving";
 
     private int nextMovingFrame = 0;
     private Direction lastMovingDirection = Direction.Up;
@@ -49,7 +51,8 @@ public class RobotDrawer extends Drawer {
     }
 
     private void drawStayingRobot(Graphics2D g2d, Robot robot) throws FileNotFoundException, NoSuchFieldException {
-        Image image = ResourceProvider.getImage(
+        String asset = GlobalSettings.getSpriteName(Models.character.name());
+        Image image = ResourceProvider.getImage(Models.character.name() + "." + asset + "." +
                 switch (get4AxisDirection(robot.getRobotDirection())) {
                     case Left -> LEFT_STAYING;
                     case Right -> RIGHT_STAYING;
@@ -62,6 +65,7 @@ public class RobotDrawer extends Drawer {
 
     private void drawMovingRobot(Graphics2D g2d, Robot robot) throws FileNotFoundException, NoSuchFieldException {
         Direction direction = get4AxisDirection(robot.getRobotDirection());
+        String asset = GlobalSettings.getSpriteName(Models.character.name());
         String action = switch (direction){
             case Left -> LEFT_MOVING;
             case Right -> RIGHT_MOVING;
@@ -74,10 +78,13 @@ public class RobotDrawer extends Drawer {
             lastMovingDirection = direction;
         }
 
-        Image image = ResourceProvider.getImage(action + "." + ++nextMovingFrame, true, false);
+        Image image = ResourceProvider.getImage(
+                Models.character.name() + "." + asset + "." + action + "." + ++nextMovingFrame,
+                true,
+                false);
         drawImage(image, robot, g2d);
 
-        int totalFramesCount = ResourceManager.getFramesCount(action);
+        int totalFramesCount = ResourceManager.getFramesCount(Models.character.name() + "." + asset + "." + action);
         nextMovingFrame %= totalFramesCount;
     }
 

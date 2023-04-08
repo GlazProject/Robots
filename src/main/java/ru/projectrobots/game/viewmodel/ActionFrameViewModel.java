@@ -5,6 +5,7 @@ package ru.projectrobots.game.viewmodel;
 import ru.projectrobots.core.bus.GameEventBus;
 import ru.projectrobots.core.events.GameEvent;
 import ru.projectrobots.core.events.GameEventType;
+import ru.projectrobots.di.container.GlobalSettings;
 import ru.projectrobots.game.model.GameAction;
 import ru.projectrobots.game.view.ActionsFrame;
 
@@ -14,6 +15,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 import static ru.projectrobots.core.view.DialogFactory.showCloseDialog;
 
@@ -52,6 +54,11 @@ public class ActionFrameViewModel {
         public void actionPerformed(ActionEvent e) {
             if (Objects.equals(e.getActionCommand(), GameAction.FIREBALL.name())) {
                 eventBus.sendData(GameEvent.getEventWithoutData(GameEventType.SEND_FIREBALL));
+            }
+
+            if (e.getActionCommand().startsWith("set.")){
+                String[] data = e.getActionCommand().split(Pattern.quote("."));
+                GlobalSettings.setSprite(data[1], data[2]);
             }
         }
     };

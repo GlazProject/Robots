@@ -5,13 +5,12 @@ import ru.projectrobots.core.model.Point;
 import ru.projectrobots.log.Logger;
 
 public class Robot extends BaseModel {
-
     private volatile RobotState robotState;
     private double robotDirection = 0;
 
     public Robot(double x, double y) {
-        MAX_ANGULAR_VELOCITY = 0.1;
-        MAX_VELOCITY = 0.5;
+        MAX_ANGULAR_VELOCITY = 0.05;
+        MAX_VELOCITY = 0.2;
         this.x = x;
         this.y = y;
     }
@@ -75,7 +74,7 @@ public class Robot extends BaseModel {
 
         double angularVelocity = (delta / Math.PI) * MAX_ANGULAR_VELOCITY;
 
-        Logger.debug("\nRobot direction: " + Math.toDegrees(robotDirection)
+        Logger.debug("\nSkeleton direction: " + Math.toDegrees(robotDirection)
                 + "\nAngle to target: " + Math.toDegrees(angleToTarget)
                 + "\nDelta: " + Math.toDegrees(delta)
                 + "\nAngular velocity: " + angularVelocity);
