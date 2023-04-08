@@ -15,8 +15,8 @@ public abstract class BaseModel {
     protected volatile double x;
     protected volatile double y;
 
-    protected final double MAX_VELOCITY = 0.1;
-    protected final double MAX_ANGULAR_VELOCITY = 0.001;
+    protected double MAX_VELOCITY = 0.1;
+    protected double MAX_ANGULAR_VELOCITY = 0.001;
 
     public int getX() {
         return round(this.x);

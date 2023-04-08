@@ -1,6 +1,8 @@
 package ru.projectrobots.game.model;
 
 import ru.projectrobots.core.model.BaseModel;
+import ru.projectrobots.core.model.Point;
+import ru.projectrobots.log.Logger;
 
 public class Robot extends BaseModel {
 
@@ -8,6 +10,8 @@ public class Robot extends BaseModel {
     private double robotDirection = 0;
 
     public Robot(double x, double y) {
+        MAX_ANGULAR_VELOCITY = 0.1;
+        MAX_VELOCITY = 0.5;
         this.x = x;
         this.y = y;
     }
@@ -65,49 +69,52 @@ public class Robot extends BaseModel {
             target.getY()
         );
 
-        double angularVelocity = 0;
-        if (angleToTarget > robotDirection) angularVelocity = MAX_ANGULAR_VELOCITY;
-        if (angleToTarget < robotDirection) angularVelocity = -MAX_ANGULAR_VELOCITY;
+        double delta = robotDirection - angleToTarget;
+        if (Math.abs(delta) > Math.PI)
+            delta -= Math.signum(delta) * Math.PI * 2;
+
+        double angularVelocity = (delta / Math.PI) * MAX_ANGULAR_VELOCITY;
+
+        Logger.debug("\nRobot direction: " + Math.toDegrees(robotDirection)
+                + "\nAngle to target: " + Math.toDegrees(angleToTarget)
+                + "\nDelta: " + Math.toDegrees(delta)
+                + "\nAngular velocity: " + angularVelocity);
 
         moveRobot(angularVelocity);
     }
 
-    private double getNewX(double velocity, double angularVelocity) {
-        double newX = x + velocity / angularVelocity *
-            (Math.sin(robotDirection + angularVelocity * 10) - Math.sin(robotDirection));
+    private Point getNewPosition(double velocity, double angularVelocity){
+        double r = velocity * 10;
+        double angle = asNormalizedRadians(robotDirection + angularVelocity * 10);
 
-        if (!Double.isFinite(newX)) newX = x + velocity * 10 * Math.cos(robotDirection);
-
-        return newX;
-    }
-
-    private double getNewY(double velocity, double angularVelocity) {
-        double newY = y - velocity / angularVelocity *
-            (Math.cos(robotDirection + angularVelocity * 10) - Math.cos(robotDirection));
-
-        if (!Double.isFinite(newY)) newY = y + velocity * 10 * Math.sin(robotDirection);
-
-        return newY;
+        return new Point(
+                x + r * Math.cos(angle),
+                y + r * Math.sin(angle)
+        );
     }
 
     private void moveRobot(double angularVelocity) {
-        double velocity = applyLimits(MAX_VELOCITY, 0, MAX_VELOCITY);
-        angularVelocity = applyLimits(angularVelocity, -MAX_ANGULAR_VELOCITY, MAX_ANGULAR_VELOCITY);
+        double velocity = (1 - angularVelocity/MAX_ANGULAR_VELOCITY)
+                * applyLimits(MAX_VELOCITY, 0, MAX_VELOCITY);
 
-        double newX = getNewX(velocity, angularVelocity);
-        double newY = getNewY(velocity, angularVelocity);
+        Point newPosition = getNewPosition(velocity, -angularVelocity);
+        Logger.debug(newPosition.toString() + angularVelocity);
 
-        if (newX > boardWidth || newY > boardHeight || newX < 10 || newY < 5) {
-            double wallAngle = 0;
-            if (newX > boardWidth || newX < 5) wallAngle = Math.PI / 2;
-
-            robotDirection = wallAngle * 2 - robotDirection;
-            newX = getNewX(velocity, angularVelocity);
-            newY = getNewY(velocity, angularVelocity);
-        } else {
-            robotDirection = asNormalizedRadians(robotDirection + angularVelocity * (double) 10);
+        if (isPointInsideBoard(newPosition.x(), newPosition.y())) {
+            robotDirection = asNormalizedRadians(robotDirection - angularVelocity * 10d);
+            setRobotPosition(newPosition.x(), newPosition.y());
+            return;
         }
 
-        setRobotPosition(newX, newY);
+        robotDirection = getAngleAfterWall(newPosition);
+        newPosition = getNewPosition(velocity, -angularVelocity);
+        setRobotPosition(newPosition.x(), newPosition.y());
+    }
+
+    private double getAngleAfterWall(Point position){
+        double wallAngle = (position.x() > boardWidth - border || position.x() < border)
+                ? Math.PI
+                : Math.PI / 2;
+        return asNormalizedRadians(wallAngle * 2 - Math.PI - robotDirection);
     }
 }
