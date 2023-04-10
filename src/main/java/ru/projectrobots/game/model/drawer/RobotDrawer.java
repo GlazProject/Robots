@@ -12,33 +12,27 @@ import ru.projectrobots.game.model.RobotState;
 
 import java.awt.*;
 import java.io.FileNotFoundException;
+import java.util.Objects;
 
 public class RobotDrawer extends Drawer {
-    private enum Direction {
-        Left,
-        Right,
-        Up,
-        Down
+    private static class Direction {
+        public static final String LEFT = "left";
+        public static final String RIGHT = "right";
+        public static final String UP = "back";
+        public static final String DOWN = "front";
     }
 
-    private static final String FRONT_STAYING = "front.staying";
-    private static final String FRONT_MOVING = "front.moving";
-    private static final String BACK_STAYING = "back.staying";
-    private static final String BACK_MOVING = "back.moving";
-    private static final String LEFT_STAYING = "left.staying";
-    private static final String LEFT_MOVING = "left.moving";
-    private static final String RIGHT_STAYING = "right.staying";
-    private static final String RIGHT_MOVING = "right.moving";
+    private static final String STAYING = "staying";
+    private static final String MOVING = "moving";
+    public static final String MODEL_NAME = Models.CHARACTER;
 
-    private int nextMovingFrame = 0;
-    private Direction lastMovingDirection = Direction.Up;
+    private int nextFrame = 0;
+    private String lastDirection = Direction.UP;
+    private String lastAction = STAYING;
 
     public void drawRobot(Graphics2D g2d, Robot robot) throws FileNotFoundException, NoSuchFieldException {
         drawShadow(g2d, robot);
-        if (robot.getRobotState() == RobotState.STAYING)
-            drawStayingRobot(g2d, robot);
-        else
-            drawMovingRobot(g2d, robot);
+        drawRobot(g2d, robot, (robot.getRobotState() == RobotState.STAYING) ? STAYING : MOVING);
     }
 
     private void drawShadow(Graphics2D g2d, Robot robot) {
@@ -50,56 +44,40 @@ public class RobotDrawer extends Drawer {
                 );
     }
 
-    private void drawStayingRobot(Graphics2D g2d, Robot robot) throws FileNotFoundException, NoSuchFieldException {
-        String asset = GlobalSettings.getSpriteName(Models.character.name());
-        Image image = ResourceProvider.getImage(Models.character.name() + "." + asset + "." +
-                switch (get4AxisDirection(robot.getRobotDirection())) {
-                    case Left -> LEFT_STAYING;
-                    case Right -> RIGHT_STAYING;
-                    case Up -> BACK_STAYING;
-                    case Down -> FRONT_STAYING;
-                }, true, false);
+    private void drawRobot(Graphics2D g2d, Robot robot, String action) throws FileNotFoundException, NoSuchFieldException {
+        String asset = GlobalSettings.getSpriteName(MODEL_NAME);
+        String direction = get4AxisDirection(robot.getRobotDirection());
 
-        drawImage(image, robot, g2d);
-    }
-
-    private void drawMovingRobot(Graphics2D g2d, Robot robot) throws FileNotFoundException, NoSuchFieldException {
-        Direction direction = get4AxisDirection(robot.getRobotDirection());
-        String asset = GlobalSettings.getSpriteName(Models.character.name());
-        String action = switch (direction){
-            case Left -> LEFT_MOVING;
-            case Right -> RIGHT_MOVING;
-            case Up -> BACK_MOVING;
-            case Down -> FRONT_MOVING;
-        };
-
-        if (direction != lastMovingDirection){
-            nextMovingFrame = 0;
-            lastMovingDirection = direction;
+        if (!Objects.equals(direction, lastDirection) || !Objects.equals(action, lastAction)){
+            nextFrame = 0;
+            lastDirection = direction;
+            lastAction = action;
         }
 
-        Image image = ResourceProvider.getImage(
-                Models.character.name() + "." + asset + "." + action + "." + ++nextMovingFrame,
-                true,
-                false);
+        String entityName = createFullName(MODEL_NAME, asset, direction, action);
+        String frameName = createFullName(entityName, String.valueOf(++nextFrame));
+
+        Image image = ResourceProvider.getImage(frameName, true, false);
         drawImage(image, robot, g2d);
 
-        int totalFramesCount = ResourceManager.getFramesCount(Models.character.name() + "." + asset + "." + action);
-        nextMovingFrame %= totalFramesCount;
+        int totalFramesCount = ResourceManager.getFramesCount(entityName);
+        nextFrame %= totalFramesCount;
     }
 
-    private Direction get4AxisDirection(double angle){
+    private String get4AxisDirection(double angle){
         double sector = Math.PI / 8;
-        if (angle < sector * 2 || angle > sector * 14) return Direction.Right;
-        if (angle < sector * 6) return Direction.Down;
-        if (angle < sector * 10) return Direction.Left;
-        return Direction.Up;
+        if (angle < sector * 2 || angle > sector * 14) return Direction.RIGHT;
+        if (angle < sector * 6) return Direction.DOWN;
+        if (angle < sector * 10) return Direction.LEFT;
+        return Direction.UP;
     }
 
     private void drawImage(Image image, Robot robot, Graphics2D g2d){
         g2d.drawImage(image,
-                robot.getX() - robot.getRobotWidth() / 2, robot.getY() - robot.getRobotHeight() / 2,
-                robot.getRobotWidth(), robot.getRobotHeight(),
+                robot.getX() - robot.getRobotWidth() / 2,
+                robot.getY() - robot.getRobotHeight() / 2,
+                robot.getRobotWidth(),
+                robot.getRobotHeight(),
                 null);
     }
 }

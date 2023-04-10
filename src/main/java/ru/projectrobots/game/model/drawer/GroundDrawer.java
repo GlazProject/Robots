@@ -11,8 +11,8 @@ import java.io.FileNotFoundException;
 
 public class GroundDrawer extends Drawer {
     public void drawGround(Graphics2D g2d, GameView frame) throws FileNotFoundException, NoSuchFieldException {
-        String asset = GlobalSettings.getSpriteName(Models.ground.name());
-        Image image = ResourceProvider.getImage(Models.ground.name() + "." + asset, true, false);
+        String asset = GlobalSettings.getSpriteName(Models.GROUND);
+        Image image = ResourceProvider.getImage(Models.GROUND + "." + asset, true, false);
 
         int imageWidth = 250;
         int imageHeight = 250;

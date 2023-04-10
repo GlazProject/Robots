@@ -24,14 +24,14 @@ public class TargetDrawer extends Drawer  {
         drawShadow(g2d, target);
 
         framesCount++;
-        String asset = GlobalSettings.getSpriteName(Models.target.name());
+        String asset = GlobalSettings.getSpriteName(Models.TARGET);
         Image image = ResourceProvider.getImage(
-                Models.target.name() + "." + asset + "." + nextFrame,
+                Models.TARGET + "." + asset + "." + nextFrame,
                 true,
                 false);
 
         if (framesCount == DELAY) {
-            int totalFramesCount = ResourceManager.getFramesCount(Models.target.name() + "." + asset);
+            int totalFramesCount = ResourceManager.getFramesCount(Models.TARGET + "." + asset);
             nextFrame %= totalFramesCount;
             nextFrame++;
             framesCount = 0;

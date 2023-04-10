@@ -34,11 +34,11 @@ public class FireballDrawer extends Drawer {
         if (fireball.isFinished()) return;
 
         String action = fireball.isLTR() ? RIGHT : LEFT;
-        String asset = GlobalSettings.getSpriteName(Models.fireball.name());
+        String asset = GlobalSettings.getSpriteName(Models.FIREBALL);
         int nextFrame = getNextFrame(fireball) + 1;
 
         Image image = ResourceProvider.getImage(
-                Models.fireball.name() + "." + asset + "." + action + "." + nextFrame,
+                Models.FIREBALL + "." + asset + "." + action + "." + nextFrame,
                 true,
                 false);
         g2d.drawImage(image,
@@ -46,7 +46,7 @@ public class FireballDrawer extends Drawer {
             fireball.getModelWidth(), fireball.getModelHeight(),
             null);
 
-        int totalFramesCount = ResourceManager.getFramesCount(Models.fireball.name() + "." + asset + "." + action);
+        int totalFramesCount = ResourceManager.getFramesCount(Models.FIREBALL + "." + asset + "." + action);
         nextFrame %= totalFramesCount;
         nextFrames.put(fireball.getId(), nextFrame);
     }
