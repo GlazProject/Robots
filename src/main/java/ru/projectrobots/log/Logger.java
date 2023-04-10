@@ -8,7 +8,7 @@ public final class Logger {
     private static boolean ignoreDebugMessages = false;
 
     static {
-        logDelegate = new LogDelegate(20);
+        logDelegate = new LogDelegate(40);
     }
 
     private Logger() {

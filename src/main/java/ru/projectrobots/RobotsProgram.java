@@ -28,13 +28,12 @@ public class RobotsProgram {
                 .setRobotHeight(100)
                 .setRobotWidth(50);
         ArrayList<Fireball> fireballs = new ArrayList<>();
-        Logger.setIgnoreDebugMessages(true);
 
         GameDataContainer dataContainer = new GameDataContainer(robot, target, fireballs);
-
         GlobalSettings.setDefaultSprites(ResourceManager.getGameEntities());
-
         GameEventBus eventBus = new GameEventBus();
+
+        Logger.setIgnoreDebugMessages(true);
 
         SwingUtilities.invokeLater(() -> {
             ApplicationFrame frame = new ApplicationFrame(dataContainer, eventBus);
