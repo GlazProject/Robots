@@ -14,24 +14,25 @@ import java.io.FileNotFoundException;
 
 public class TargetDrawer extends Drawer  {
     private static final int DELAY = 2;
+    public static final String MODEL_NAME = Models.TARGET;
 
     private int nextFrame = 1;
     private int framesCount = 0;
 
     public void drawTarget(Graphics2D g2d, Target target) throws FileNotFoundException, NoSuchFieldException {
         if (target.isCollected()) return;
-        int size = target.getSize();
-        drawShadow(g2d, target);
 
-        framesCount++;
-        String asset = GlobalSettings.getSpriteName(Models.TARGET);
-        Image image = ResourceProvider.getImage(
-                Models.TARGET + "." + asset + "." + nextFrame,
-                true,
-                false);
+        drawShadow(g2d, target);
+        int size = target.getSize();
+
+        String asset = GlobalSettings.getSpriteName(MODEL_NAME);
+        String entityName = createFullName(MODEL_NAME, asset);
+        String frameName = createFullName(entityName, String.valueOf(++nextFrame));
+
+        Image image = ResourceProvider.getImage(frameName, true, false);
 
         if (framesCount == DELAY) {
-            int totalFramesCount = ResourceManager.getFramesCount(Models.TARGET + "." + asset);
+            int totalFramesCount = ResourceManager.getFramesCount(entityName);
             nextFrame %= totalFramesCount;
             nextFrame++;
             framesCount = 0;

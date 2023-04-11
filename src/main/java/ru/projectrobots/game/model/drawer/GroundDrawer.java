@@ -10,19 +10,23 @@ import java.awt.*;
 import java.io.FileNotFoundException;
 
 public class GroundDrawer extends Drawer {
-    public void drawGround(Graphics2D g2d, GameView frame) throws FileNotFoundException, NoSuchFieldException {
-        String asset = GlobalSettings.getSpriteName(Models.GROUND);
-        Image image = ResourceProvider.getImage(Models.GROUND + "." + asset, true, false);
+    public static final String MODEL_NAME = Models.GROUND;
 
+    public void drawGround(Graphics2D g2d, GameView frame) throws FileNotFoundException, NoSuchFieldException {
         int imageWidth = 250;
         int imageHeight = 250;
-        image = image.getScaledInstance(imageWidth, imageHeight, Image.SCALE_FAST);
 
-        int horizontalCount = (int)Math.ceil(1d * frame.getWidth() / imageWidth);
-        int verticalCount = (int)Math.ceil(1d * frame.getHeight() / imageHeight);
+        String asset = GlobalSettings.getSpriteName(MODEL_NAME);
+        String entityName = createFullName(MODEL_NAME, asset);
+        Image image = ResourceProvider
+                .getImage(entityName, true, false)
+                .getScaledInstance(imageWidth, imageHeight, Image.SCALE_FAST);
 
-        for(int i = 0; i< horizontalCount;i++)
-            for (int j = 0;j<verticalCount;j++){
+        int horizontalNumber = (int)Math.ceil(1d * frame.getWidth() / imageWidth);
+        int verticalNumber = (int)Math.ceil(1d * frame.getHeight() / imageHeight);
+
+        for(int i = 0; i< horizontalNumber;i++)
+            for (int j = 0;j<verticalNumber;j++){
                 g2d.drawImage(image, i*imageWidth, j*imageHeight, frame);
             }
     }

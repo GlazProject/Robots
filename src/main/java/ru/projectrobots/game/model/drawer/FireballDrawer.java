@@ -17,6 +17,7 @@ import java.util.HashMap;
 public class FireballDrawer extends Drawer {
     private static final String LEFT = "left";
     private static final String RIGHT = "right";
+    public static final String MODEL_NAME = Models.FIREBALL;
 
     private final HashMap<String, Integer> nextFrames = new HashMap<>();
 
@@ -33,20 +34,19 @@ public class FireballDrawer extends Drawer {
     public void drawFireball(Graphics2D g2d, Fireball fireball) throws FileNotFoundException, NoSuchFieldException {
         if (fireball.isFinished()) return;
 
-        String action = fireball.isLTR() ? RIGHT : LEFT;
-        String asset = GlobalSettings.getSpriteName(Models.FIREBALL);
         int nextFrame = getNextFrame(fireball) + 1;
+        String action = fireball.isLTR() ? RIGHT : LEFT;
+        String asset = GlobalSettings.getSpriteName(MODEL_NAME);
+        String entityName = createFullName(MODEL_NAME, asset, action);
+        String frameName = createFullName(entityName, String.valueOf(nextFrame));
 
-        Image image = ResourceProvider.getImage(
-                Models.FIREBALL + "." + asset + "." + action + "." + nextFrame,
-                true,
-                false);
+        Image image = ResourceProvider.getImage(frameName, true, false);
         g2d.drawImage(image,
             fireball.getX() - fireball.getModelWidth() / 2, fireball.getY() - fireball.getModelHeight() / 2,
             fireball.getModelWidth(), fireball.getModelHeight(),
             null);
 
-        int totalFramesCount = ResourceManager.getFramesCount(Models.FIREBALL + "." + asset + "." + action);
+        int totalFramesCount = ResourceManager.getFramesCount(entityName);
         nextFrame %= totalFramesCount;
         nextFrames.put(fireball.getId(), nextFrame);
     }
