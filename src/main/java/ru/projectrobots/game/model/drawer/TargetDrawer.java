@@ -27,11 +27,12 @@ public class TargetDrawer extends Drawer  {
 
         String asset = GlobalSettings.getSpriteName(MODEL_NAME);
         String entityName = createFullName(MODEL_NAME, asset);
-        String frameName = createFullName(entityName, String.valueOf(++nextFrame));
+        String frameName = createFullName(entityName, String.valueOf(nextFrame));
 
         Image image = ResourceProvider.getImage(frameName, true, false);
 
-        if (framesCount == DELAY) {
+        framesCount++;
+        if (framesCount >= DELAY) {
             int totalFramesCount = ResourceManager.getFramesCount(entityName);
             nextFrame %= totalFramesCount;
             nextFrame++;
