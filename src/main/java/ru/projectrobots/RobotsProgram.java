@@ -8,7 +8,7 @@ import ru.projectrobots.game.model.Fireball;
 import ru.projectrobots.game.model.Robot;
 import ru.projectrobots.game.model.Target;
 import ru.projectrobots.log.Logger;
-import ru.projectrobots.resources.ResourceManager;
+import ru.projectrobots.resources.Repository;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,6 +17,9 @@ import java.util.ArrayList;
 public class RobotsProgram {
 
     public static void main(String[] args) {
+        Logger.setIgnoreDebugMessages(true);
+        Repository.loadAllProperties("src/main/resources/properties");
+
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
@@ -30,10 +33,8 @@ public class RobotsProgram {
         ArrayList<Fireball> fireballs = new ArrayList<>();
 
         GameDataContainer dataContainer = new GameDataContainer(robot, target, fireballs);
-        GlobalSettings.setDefaultSprites(ResourceManager.getGameEntities());
+        GlobalSettings.setDefaultSprites(Repository.getGameEntities());
         GameEventBus eventBus = new GameEventBus();
-
-        Logger.setIgnoreDebugMessages(true);
 
         SwingUtilities.invokeLater(() -> {
             ApplicationFrame frame = new ApplicationFrame(dataContainer, eventBus);

@@ -3,7 +3,7 @@ package ru.projectrobots.game.view.panel;
 import ru.projectrobots.game.model.GameAction;
 import ru.projectrobots.game.view.panel.settings.EntityLooksSelectionPanel;
 import ru.projectrobots.game.view.panel.settings.GameSettingsPanel;
-import ru.projectrobots.resources.ResourceManager;
+import ru.projectrobots.resources.Repository;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +16,7 @@ public class MainGameSettingsPanel extends JPanel {
     private final CardLayout layout = new CardLayout();
     private final JPanel contentPane = this;
     private final ActionListener actionListener;
-    private final List<String> entities = ResourceManager.getGameEntities();
+    private final List<String> entities = Repository.getGameEntities();
 
     private final ActionListener panelSwitchListener = new ActionListener() {
         @Override
@@ -44,7 +44,7 @@ public class MainGameSettingsPanel extends JPanel {
         this.actionListener = actionListener;
         setLayout(layout);
 
-        JPanel basePanel = new GameSettingsPanel(panelSwitchListener);
+        JPanel basePanel = new GameSettingsPanel(panelSwitchListener, entities);
         add(basePanel);
 
         for(String entity : entities){

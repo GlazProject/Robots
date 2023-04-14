@@ -5,8 +5,7 @@ package ru.projectrobots.game.model.drawer;
 import ru.projectrobots.core.drawer.Drawer;
 import ru.projectrobots.di.container.GlobalSettings;
 import ru.projectrobots.game.model.Models;
-import ru.projectrobots.resources.ResourceManager;
-import ru.projectrobots.resources.ResourceProvider;
+import ru.projectrobots.resources.Repository;
 import ru.projectrobots.game.model.Target;
 
 import java.awt.*;
@@ -29,11 +28,11 @@ public class TargetDrawer extends Drawer  {
         String entityName = createFullName(MODEL_NAME, asset);
         String frameName = createFullName(entityName, String.valueOf(nextFrame));
 
-        Image image = ResourceProvider.getImage(frameName, true, false);
+        Image image = Repository.getImage(frameName, true, false);
 
         framesCount++;
         if (framesCount >= DELAY) {
-            int totalFramesCount = ResourceManager.getFramesCount(entityName);
+            int totalFramesCount = Repository.getFramesCount(entityName);
             nextFrame %= totalFramesCount;
             nextFrame++;
             framesCount = 0;

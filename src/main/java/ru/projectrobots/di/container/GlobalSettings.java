@@ -1,6 +1,6 @@
 package ru.projectrobots.di.container;
 
-import ru.projectrobots.resources.ResourceManager;
+import ru.projectrobots.resources.Repository;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +15,7 @@ public class GlobalSettings {
 
     public static void setDefaultSprites(List<String> entities){
         for (String entity : entities) {
-            spritesNames.put(entity, ResourceManager.getLooks(entity).get(0));
+            spritesNames.put(entity, Repository.getLooks(entity).get(0));
         }
     }
 

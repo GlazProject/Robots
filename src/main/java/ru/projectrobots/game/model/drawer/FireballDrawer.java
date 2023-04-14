@@ -6,8 +6,7 @@ import ru.projectrobots.core.drawer.Drawer;
 import ru.projectrobots.di.container.GlobalSettings;
 import ru.projectrobots.game.model.Fireball;
 import ru.projectrobots.game.model.Models;
-import ru.projectrobots.resources.ResourceManager;
-import ru.projectrobots.resources.ResourceProvider;
+import ru.projectrobots.resources.Repository;
 
 import java.awt.*;
 import java.io.FileNotFoundException;
@@ -40,13 +39,13 @@ public class FireballDrawer extends Drawer {
         String entityName = createFullName(MODEL_NAME, asset, action);
         String frameName = createFullName(entityName, String.valueOf(nextFrame));
 
-        Image image = ResourceProvider.getImage(frameName, true, false);
+        Image image = Repository.getImage(frameName, true, false);
         g2d.drawImage(image,
             fireball.getX() - fireball.getModelWidth() / 2, fireball.getY() - fireball.getModelHeight() / 2,
             fireball.getModelWidth(), fireball.getModelHeight(),
             null);
 
-        int totalFramesCount = ResourceManager.getFramesCount(entityName);
+        int totalFramesCount = Repository.getFramesCount(entityName);
         nextFrame %= totalFramesCount;
         nextFrames.put(fireball.getId(), nextFrame);
     }

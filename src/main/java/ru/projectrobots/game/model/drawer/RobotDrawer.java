@@ -5,8 +5,7 @@ package ru.projectrobots.game.model.drawer;
 import ru.projectrobots.core.drawer.Drawer;
 import ru.projectrobots.di.container.GlobalSettings;
 import ru.projectrobots.game.model.Models;
-import ru.projectrobots.resources.ResourceManager;
-import ru.projectrobots.resources.ResourceProvider;
+import ru.projectrobots.resources.Repository;
 import ru.projectrobots.game.model.Robot;
 import ru.projectrobots.game.model.RobotState;
 
@@ -57,10 +56,10 @@ public class RobotDrawer extends Drawer {
         String entityName = createFullName(MODEL_NAME, asset, direction, action);
         String frameName = createFullName(entityName, String.valueOf(++nextFrame));
 
-        Image image = ResourceProvider.getImage(frameName, true, false);
+        Image image = Repository.getImage(frameName, true, false);
         drawImage(image, robot, g2d);
 
-        int totalFramesCount = ResourceManager.getFramesCount(entityName);
+        int totalFramesCount = Repository.getFramesCount(entityName);
         nextFrame %= totalFramesCount;
     }
 

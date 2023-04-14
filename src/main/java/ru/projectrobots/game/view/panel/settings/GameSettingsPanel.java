@@ -1,7 +1,6 @@
 package ru.projectrobots.game.view.panel.settings;
 
 import ru.projectrobots.game.model.GameAction;
-import ru.projectrobots.resources.ResourceManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,8 +8,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 public class GameSettingsPanel extends JPanel {
-    public GameSettingsPanel(ActionListener actionListener){
-        List<String> entities = ResourceManager.getGameEntities();
+    public GameSettingsPanel(ActionListener actionListener, List<String> entities){
         setLayout(new GridLayout(entities.size() + 1, 1));
 
         for(String entity : entities){

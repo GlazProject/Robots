@@ -3,7 +3,7 @@ package ru.projectrobots.game.model.drawer;
 import ru.projectrobots.core.drawer.Drawer;
 import ru.projectrobots.di.container.GlobalSettings;
 import ru.projectrobots.game.model.Models;
-import ru.projectrobots.resources.ResourceProvider;
+import ru.projectrobots.resources.Repository;
 import ru.projectrobots.game.view.GameView;
 
 import java.awt.*;
@@ -18,7 +18,7 @@ public class GroundDrawer extends Drawer {
 
         String asset = GlobalSettings.getSpriteName(MODEL_NAME);
         String entityName = createFullName(MODEL_NAME, asset);
-        Image image = ResourceProvider
+        Image image = Repository
                 .getImage(entityName, true, false)
                 .getScaledInstance(imageWidth, imageHeight, Image.SCALE_FAST);
 
