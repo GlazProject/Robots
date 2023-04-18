@@ -4,6 +4,7 @@ import org.jetbrains.annotations.Nullable;
 import ru.projectrobots.log.Logger;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,9 +12,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-public class ResourceProvider {
+class ResourceProvider {
     private static final HashMap<String, Image> cachedImages = new LinkedHashMap<>();
-    private static final String DEFAULT_IMAGE = "default.image";
+    private static final String DEFAULT_IMAGE = "game.default.image";
 
     public static Image getImage(String imageName, boolean forOftenUse, boolean reload) throws NoSuchFieldException, FileNotFoundException {
         String imagePath = ResourceManager.getImagePath(imageName);
@@ -30,6 +31,14 @@ public class ResourceProvider {
         if (imageName.equals(DEFAULT_IMAGE))
             throw new FileNotFoundException(imagePath);
         return getImage(DEFAULT_IMAGE, true, false);
+    }
+
+    public static Icon getIconWithHeight(String iconName, int height) throws FileNotFoundException, NoSuchFieldException {
+        Image image = getImage(iconName, true, false);
+        double scale = 1.0 * height / image.getHeight(null);
+        int newWidth = (int)(image.getWidth(null) * scale);
+        Image scaledImage = image.getScaledInstance(newWidth, height, Image.SCALE_FAST);
+        return new ImageIcon(scaledImage);
     }
 
     @Nullable

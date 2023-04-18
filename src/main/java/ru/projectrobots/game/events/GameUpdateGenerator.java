@@ -31,7 +31,7 @@ public class GameUpdateGenerator {
             public void run() {
                 eventBus.sendData(GameEvent.getEventWithoutData(GameEventType.UPDATE_ROBOT));
             }
-        }, 0, 10);
+        }, 0, 50);
 
         timer.schedule(new TimerTask() {
             @Override

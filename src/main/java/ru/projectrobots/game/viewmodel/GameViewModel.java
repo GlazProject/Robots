@@ -8,6 +8,8 @@ import ru.projectrobots.core.bus.GameEventBus;
 import ru.projectrobots.core.events.GameEvent;
 import ru.projectrobots.core.events.ViewUpdateEvent;
 import ru.projectrobots.di.container.GameDataContainer;
+import ru.projectrobots.di.container.GlobalSettings;
+import ru.projectrobots.di.container.LookEntry;
 import ru.projectrobots.game.events.GameUpdateGenerator;
 import ru.projectrobots.game.model.Fireball;
 import ru.projectrobots.game.model.Robot;
@@ -77,7 +79,16 @@ public class GameViewModel {
             case UPDATE_ROBOT -> robot.update(target);
             case SEND_FIREBALL -> sendFireball();
             case UPDATE_FIREBALL -> updateFireballs();
+            case UPDATE_LOOK -> updateGlobalSettings(event.data());
         }
+    }
+
+    private void updateGlobalSettings(Object entry){
+        if (!(entry instanceof LookEntry lookEntry)) {
+            Logger.error("Entry from event is not Global settings entry");
+            return;
+        }
+        GlobalSettings.setSprite(lookEntry.entityId(), lookEntry.look());
     }
 
     private void sendFireball() {

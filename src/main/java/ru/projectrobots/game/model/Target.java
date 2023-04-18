@@ -8,7 +8,6 @@ import java.awt.*;
 
 public class Target extends BaseModel {
     private int size = 20;
-
     private volatile boolean collected = false;
 
     public Target(int x, int y) {

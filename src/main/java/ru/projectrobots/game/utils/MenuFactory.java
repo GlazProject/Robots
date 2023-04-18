@@ -65,7 +65,7 @@ public class MenuFactory {
                  | InstantiationException
                  | IllegalAccessException
                  | UnsupportedLookAndFeelException ignored) {
-            Logger.error("Error while setting up menu");
+            Logger.error("Error while setting up settings");
         }
     }
 }
