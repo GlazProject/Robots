@@ -8,5 +8,5 @@ public enum GameEventType {
     UPDATE_ROBOT,
     SEND_FIREBALL,
     UPDATE_FIREBALL,
-    UPDATE_LOOK,
+    UPDATE_SETTING,
 }
