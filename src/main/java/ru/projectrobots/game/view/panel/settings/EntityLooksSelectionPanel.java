@@ -11,7 +11,7 @@ import java.util.List;
 
 public class EntityLooksSelectionPanel extends JPanel {
     public static final String PREVIEW = "preview";
-    public static final String SET_COMMAND = "set";
+    public static final String SET_COMMAND = "set.look";
 
     public EntityLooksSelectionPanel(ActionListener actionListener, String entityName) {
         List<String> looks = Repository.getLooks(entityName);

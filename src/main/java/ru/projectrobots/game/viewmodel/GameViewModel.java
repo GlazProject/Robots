@@ -85,6 +85,7 @@ public class GameViewModel {
             case SEND_FIREBALL -> sendFireball();
             case UPDATE_FIREBALL -> updateFireballs();
             case UPDATE_SETTING -> updateGlobalSettings(event.data());
+            case TARGET_COLLECTED -> AudioPlayer.playCollectedSound();
         }
     }
 

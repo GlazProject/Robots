@@ -57,18 +57,25 @@ public class ActionFrameViewModel {
                 eventBus.sendData(GameEvent.getEventWithoutData(GameEventType.SEND_FIREBALL));
             }
 
-            if (e.getActionCommand().startsWith("set.")) {
-                String[] data = e.getActionCommand().split(Pattern.quote("."));
-                if (data.length == 2) {
-                    eventBus.sendData(new GameEvent<>(
-                        GameEventType.UPDATE_SETTING,
-                        new AudioEntry(data[1])));
-                } else {
-                    eventBus.sendData(new GameEvent<>(
-                        GameEventType.UPDATE_SETTING,
-                        new LookEntry(data[1], data[2])));
-                }
+            if (e.getActionCommand().startsWith("set.look")) {
+                sendLookUpdate(e.getActionCommand());
+            } else if (e.getActionCommand().startsWith("set.music")) {
+                sendMusicUpdate(e.getActionCommand());
             }
         }
     };
+
+    private void sendLookUpdate(String command) {
+        String[] data = command.split(Pattern.quote("."));
+        eventBus.sendData(new GameEvent<>(
+            GameEventType.UPDATE_SETTING,
+            new LookEntry(data[2], data[3])));
+    }
+
+    private void sendMusicUpdate(String command) {
+        String[] data = command.split(Pattern.quote("."));
+        eventBus.sendData(new GameEvent<>(
+            GameEventType.UPDATE_SETTING,
+            new AudioEntry(data[2])));
+    }
 }

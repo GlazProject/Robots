@@ -1,19 +1,26 @@
 package ru.projectrobots.game.model;
 
+import ru.projectrobots.core.bus.GameEventBus;
+import ru.projectrobots.core.events.GameEvent;
+import ru.projectrobots.core.events.GameEventType;
 import ru.projectrobots.core.model.BaseModel;
 import ru.projectrobots.core.model.Point;
-import ru.projectrobots.game.sound.AudioPlayer;
 import ru.projectrobots.log.Logger;
 
 public class Robot extends BaseModel {
+
+    private final GameEventBus eventBus;
+
     private volatile RobotState robotState;
     private double robotDirection = 0;
 
-    public Robot(double x, double y) {
+    public Robot(double x, double y, GameEventBus bus) {
         MAX_ANGULAR_VELOCITY = 0.05;
         MAX_VELOCITY = 0.2;
         this.x = x;
         this.y = y;
+
+        this.eventBus = bus;
     }
 
     public int getRobotHeight() {
@@ -61,7 +68,7 @@ public class Robot extends BaseModel {
         if (distance(target.getX(), target.getY(), x, y) < target.getSize() / 2d) {
             target.setCollected();
             robotState = RobotState.STAYING;
-            AudioPlayer.playCollectedSound();
+            eventBus.sendData(GameEvent.getEventWithoutData(GameEventType.TARGET_COLLECTED));
             return;
         }
 

@@ -9,4 +9,5 @@ public enum GameEventType {
     SEND_FIREBALL,
     UPDATE_FIREBALL,
     UPDATE_SETTING,
+    TARGET_COLLECTED
 }

@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 public class BackgroundAudioSelectionPanel extends JPanel {
-    public static final String SET_COMMAND = "set";
+    public static final String SET_COMMAND = "set.music";
 
     public BackgroundAudioSelectionPanel(ActionListener actionListener) {
         List<String> tracks = Repository.getBackgroundTracks();
