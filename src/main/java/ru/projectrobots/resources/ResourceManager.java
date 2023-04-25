@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.Locale;
 
 class ResourceManager {
 
@@ -26,6 +27,11 @@ class ResourceManager {
 
     public static List<String> getBackgroundTracks(){
         return List.of(PropertiesProvider.getProperty("sounds.backgrounds", "").split(","));
+    }
+
+    public static String getLocalizedPhrase(String phrase, Locale locale){
+        String phrase_name = String.format("phrases_%s.%s", locale.getLanguage(), phrase);
+        return PropertiesProvider.getProperty(phrase_name, phrase);
     }
 
     public static Image getImage(String imageName, boolean forOftenUse, boolean reload) throws NoSuchFieldException, FileNotFoundException {

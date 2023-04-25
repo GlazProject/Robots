@@ -1,5 +1,6 @@
 package ru.projectrobots.game.view.panel.settings;
 
+import ru.projectrobots.di.container.GlobalSettings;
 import ru.projectrobots.game.model.GameAction;
 import ru.projectrobots.resources.Repository;
 
@@ -18,7 +19,7 @@ public class EntityLooksSelectionPanel extends JPanel {
         setLayout(new GridLayout(looks.size() + 1, 1, 40, 20));
 
         for (String look:looks) {
-            JButton button = new JButton(look);
+            JButton button = new JButton(Repository.getLocalePhrase(look, GlobalSettings.getLocale()));
             button.setBorderPainted(true);
 
             try {
@@ -33,7 +34,7 @@ public class EntityLooksSelectionPanel extends JPanel {
             add(button);
         }
 
-        JButton backBtn = new JButton("Назад в меню");
+        JButton backBtn = new JButton(Repository.getLocalePhrase("back_to_menu", GlobalSettings.getLocale()));
         backBtn.setBorderPainted(true);
         backBtn.setActionCommand(GameAction.OPEN_SETTINGS.name());
         backBtn.addActionListener(actionListener);

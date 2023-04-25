@@ -1,7 +1,9 @@
 package ru.projectrobots.game.utils;
 
+import ru.projectrobots.di.container.GlobalSettings;
 import ru.projectrobots.game.ApplicationFrame;
 import ru.projectrobots.log.Logger;
+import ru.projectrobots.resources.Repository;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
@@ -22,29 +24,35 @@ public class MenuFactory {
     }
 
     private JMenu createLookAndFeelMenu() {
-        JMenu lookAndFeelMenu = new JMenu("Режим отображения");
+        JMenu lookAndFeelMenu = new JMenu(Repository.getLocalePhrase("view_mode", GlobalSettings.getLocale()));
         lookAndFeelMenu.setMnemonic(KeyEvent.VK_V);
-        lookAndFeelMenu.getAccessibleContext().setAccessibleDescription("Управление режимом отображения приложения");
+        lookAndFeelMenu.getAccessibleContext().setAccessibleDescription(
+                Repository.getLocalePhrase("view_mode_management", GlobalSettings.getLocale())
+        );
 
-        addScheme(lookAndFeelMenu, "Системная схема", UIManager.getSystemLookAndFeelClassName());
-        addScheme(lookAndFeelMenu, "Универсальная схема", UIManager.getCrossPlatformLookAndFeelClassName());
+        addScheme(lookAndFeelMenu, Repository.getLocalePhrase("system_scheme", GlobalSettings.getLocale()),
+                UIManager.getSystemLookAndFeelClassName());
+        addScheme(lookAndFeelMenu, Repository.getLocalePhrase("universal_scheme", GlobalSettings.getLocale()),
+                UIManager.getCrossPlatformLookAndFeelClassName());
 
         return lookAndFeelMenu;
     }
 
     private JMenu createTestMenu() {
-        JMenu testMenu = new JMenu("Тесты");
+        JMenu testMenu = new JMenu(Repository.getLocalePhrase("tests", GlobalSettings.getLocale()));
         testMenu.setMnemonic(KeyEvent.VK_T);
-        testMenu.getAccessibleContext().setAccessibleDescription("Тестовые команды");
+        testMenu.getAccessibleContext().setAccessibleDescription(
+                Repository.getLocalePhrase("test_commands", GlobalSettings.getLocale()));
 
-        addTest(testMenu, "Сообщение в лог", "Новая строка");
+        addTest(testMenu, Repository.getLocalePhrase("log_message", GlobalSettings.getLocale()),
+                Repository.getLocalePhrase("new_line", GlobalSettings.getLocale()));
 
         return testMenu;
     }
 
     private void addTest(JMenu testMenu, String name, String message) {
         JMenuItem newLogEntryItem = new JMenuItem(name, KeyEvent.VK_S);
-        newLogEntryItem.addActionListener((event) -> Logger.debug(message));
+        newLogEntryItem.addActionListener((event) -> Logger.error(message));
         testMenu.add(newLogEntryItem);
     }
 

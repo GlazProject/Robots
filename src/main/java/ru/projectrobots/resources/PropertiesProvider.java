@@ -5,6 +5,8 @@ import ru.projectrobots.log.Logger;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.Properties;
 
@@ -29,7 +31,8 @@ class PropertiesProvider {
         int dotIndex = fileName.lastIndexOf('.');
         String prefix = (dotIndex == -1) ? fileName : fileName.substring(0, dotIndex);
         try {
-            loadedProperties.load(new FileInputStream(folder.getPath() + File.separator + fileName));
+            FileInputStream input = new FileInputStream(folder.getPath() + File.separator + fileName);
+            loadedProperties.load(new InputStreamReader(input, StandardCharsets.UTF_8));
         } catch (IOException e) {
             Logger.error("Repository can not load " + folder.getPath() + File.separator + fileName);
             return;

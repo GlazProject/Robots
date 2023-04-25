@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.Locale;
 
 public class Repository {
 
@@ -36,6 +37,10 @@ public class Repository {
     public synchronized static Icon getIconWithHeight(String iconName, int height)
             throws FileNotFoundException, NoSuchFieldException {
         return ResourceManager.getIconWithHeight(iconName, height);
+    }
+
+    public synchronized static String getLocalePhrase(String phrase, Locale locale){
+        return ResourceManager.getLocalizedPhrase(phrase, locale);
     }
 
     public synchronized static AudioInputStream getSound(String name) {
