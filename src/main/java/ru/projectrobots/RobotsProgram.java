@@ -26,15 +26,16 @@ public class RobotsProgram {
             e.printStackTrace();
         }
 
+        GameEventBus eventBus = new GameEventBus();
+
         Target target = new Target(100, 100);
-        Robot robot = new Robot(10, 10)
+        Robot robot = new Robot(10, 10, eventBus)
                 .setRobotHeight(100)
                 .setRobotWidth(50);
         ArrayList<Fireball> fireballs = new ArrayList<>();
 
         GameDataContainer dataContainer = new GameDataContainer(robot, target, fireballs);
         GlobalSettings.setDefaultSprites(Repository.getGameEntities());
-        GameEventBus eventBus = new GameEventBus();
 
         SwingUtilities.invokeLater(() -> {
             ApplicationFrame frame = new ApplicationFrame(dataContainer, eventBus);

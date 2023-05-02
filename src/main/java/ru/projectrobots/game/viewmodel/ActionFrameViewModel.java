@@ -5,6 +5,7 @@ package ru.projectrobots.game.viewmodel;
 import ru.projectrobots.core.bus.GameEventBus;
 import ru.projectrobots.core.events.GameEvent;
 import ru.projectrobots.core.events.GameEventType;
+import ru.projectrobots.di.container.AudioEntry;
 import ru.projectrobots.di.container.LookEntry;
 import ru.projectrobots.game.model.GameAction;
 import ru.projectrobots.game.view.ActionsFrame;
@@ -56,12 +57,25 @@ public class ActionFrameViewModel {
                 eventBus.sendData(GameEvent.getEventWithoutData(GameEventType.SEND_FIREBALL));
             }
 
-            if (e.getActionCommand().startsWith("set.")){
-                String[] data = e.getActionCommand().split(Pattern.quote("."));
-                eventBus.sendData(new GameEvent<>(
-                        GameEventType.UPDATE_LOOK,
-                        new LookEntry(data[1], data[2])));
+            if (e.getActionCommand().startsWith("set.look")) {
+                sendLookUpdate(e.getActionCommand());
+            } else if (e.getActionCommand().startsWith("set.music")) {
+                sendMusicUpdate(e.getActionCommand());
             }
         }
     };
+
+    private void sendLookUpdate(String command) {
+        String[] data = command.split(Pattern.quote("."));
+        eventBus.sendData(new GameEvent<>(
+            GameEventType.UPDATE_SETTING,
+            new LookEntry(data[2], data[3])));
+    }
+
+    private void sendMusicUpdate(String command) {
+        String[] data = command.split(Pattern.quote("."));
+        eventBus.sendData(new GameEvent<>(
+            GameEventType.UPDATE_SETTING,
+            new AudioEntry(data[2])));
+    }
 }

@@ -1,9 +1,11 @@
 package ru.projectrobots.log.view;
 
+import ru.projectrobots.di.container.GlobalSettings;
 import ru.projectrobots.log.Logger;
 import ru.projectrobots.log.delegate.LogDelegate;
 import ru.projectrobots.log.listeners.LogChangeListener;
 import ru.projectrobots.log.model.LogEntry;
+import ru.projectrobots.resources.Repository;
 
 import javax.swing.*;
 import javax.swing.event.InternalFrameAdapter;
@@ -19,7 +21,8 @@ public class LogView extends JInternalFrame implements LogChangeListener {
     private final TextArea contentView;
 
     public LogView(LogDelegate _logDelegate) {
-        super("Протокол работы", true, true, true, true);
+        super(Repository.getLocalePhrase("log", GlobalSettings.getLocale()),
+                true, true, true, true);
 
         logDelegate = _logDelegate;
         logDelegate.registerListener(this);
@@ -69,7 +72,7 @@ public class LogView extends JInternalFrame implements LogChangeListener {
         });
 
         pack();
-        Logger.debug("Протокол работает");
+        Logger.debug("All right. Test message");
         return this;
     }
 }

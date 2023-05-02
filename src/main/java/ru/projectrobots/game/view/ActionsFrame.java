@@ -2,9 +2,11 @@ package ru.projectrobots.game.view;
 
 /* created by zzemlyanaya on 25/03/2023 */
 
+import ru.projectrobots.di.container.GlobalSettings;
 import ru.projectrobots.game.model.GameAction;
 import ru.projectrobots.game.view.panel.MainGameSettingsPanel;
 import ru.projectrobots.game.view.panel.MainActionsPanel;
+import ru.projectrobots.resources.Repository;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,7 +36,8 @@ public class ActionsFrame extends JInternalFrame {
     };
 
     public ActionsFrame(ActionListener actionListener) {
-        super("Способности", false, true, false, true);
+        super(Repository.getLocalePhrase("abilities", GlobalSettings.getLocale()),
+                false, true, false, true);
 
         this.actionListener = actionListener;
         contentPane.setLayout(layout);
@@ -42,8 +45,8 @@ public class ActionsFrame extends JInternalFrame {
         JPanel mainPanel = new MainActionsPanel(panelSwitchListener);
         JPanel settingsPanel = new MainGameSettingsPanel(panelSwitchListener);
 
-        contentPane.add(mainPanel, "Способности персонажа");
-        contentPane.add(settingsPanel, "Настройки игры");
+        contentPane.add(mainPanel, "character_abilities");
+        contentPane.add(settingsPanel, "game_settings");
 
         setContentPane(contentPane);
     }

@@ -7,6 +7,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import ru.projectrobots.core.bus.GameEventBus;
 import ru.projectrobots.core.events.GameEvent;
 import ru.projectrobots.core.events.ViewUpdateEvent;
+import ru.projectrobots.di.container.AudioEntry;
 import ru.projectrobots.di.container.GameDataContainer;
 import ru.projectrobots.di.container.GlobalSettings;
 import ru.projectrobots.di.container.LookEntry;
@@ -14,6 +15,8 @@ import ru.projectrobots.game.events.GameUpdateGenerator;
 import ru.projectrobots.game.model.Fireball;
 import ru.projectrobots.game.model.Robot;
 import ru.projectrobots.game.model.Target;
+import ru.projectrobots.game.sound.Audio;
+import ru.projectrobots.game.sound.AudioPlayer;
 import ru.projectrobots.game.view.GameView;
 import ru.projectrobots.log.Logger;
 
@@ -44,6 +47,8 @@ public class GameViewModel {
         updateGenerator.startUpdates();
         initUserEventListeners();
         initGameEventListeners();
+
+        AudioPlayer.loopBackgroundMusic(Audio.BACKGROUND_2);
     }
 
     public GameView getView() {
@@ -74,26 +79,30 @@ public class GameViewModel {
         Logger.debug("Received event: " + event.type().name());
 
         switch (event.type()) {
-            case GAME_CLOSED -> disposable.dispose();
+            case GAME_CLOSED -> onGameClosed();
             case REDRAW_VIEW -> view.onUpdate(ViewUpdateEvent.REDRAW_MODEL_EVENT);
             case UPDATE_ROBOT -> robot.update(target);
             case SEND_FIREBALL -> sendFireball();
             case UPDATE_FIREBALL -> updateFireballs();
-            case UPDATE_LOOK -> updateGlobalSettings(event.data());
+            case UPDATE_SETTING -> updateGlobalSettings(event.data());
+            case TARGET_COLLECTED -> AudioPlayer.playCollectedSound();
         }
     }
 
-    private void updateGlobalSettings(Object entry){
-        if (!(entry instanceof LookEntry lookEntry)) {
+    private void updateGlobalSettings(Object entry) {
+        if (entry instanceof AudioEntry audioEntry) {
+            AudioPlayer.loopBackgroundMusic(Audio.findAudioBySuffix(audioEntry.backgroundTrack()));
+        } else if (entry instanceof LookEntry lookEntry) {
+            GlobalSettings.setSprite(lookEntry.entityId(), lookEntry.look());
+        } else {
             Logger.error("Entry from event is not Global settings entry");
-            return;
         }
-        GlobalSettings.setSprite(lookEntry.entityId(), lookEntry.look());
     }
 
     private void sendFireball() {
         Fireball fireball = Fireball.generateFireball(robot.getBoardWidth(), robot.getBoardHeight());
         fireballs.add(fireball);
+        AudioPlayer.playFireballSound();
     }
 
     private void updateFireballs() {
@@ -104,5 +113,10 @@ public class GameViewModel {
             fireball.update(target, robot);
             if (fireball.isFinished()) iterator.remove();
         }
+    }
+
+    private void onGameClosed() {
+        AudioPlayer.stopAll();
+        disposable.dispose();
     }
 }
