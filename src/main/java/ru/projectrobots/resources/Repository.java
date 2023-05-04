@@ -1,5 +1,7 @@
 package ru.projectrobots.resources;
 
+import org.jetbrains.annotations.Nullable;
+
 import javax.sound.sampled.AudioInputStream;
 import javax.swing.*;
 import java.awt.*;
@@ -39,11 +41,21 @@ public class Repository {
         return ResourceManager.getIconWithHeight(iconName, height);
     }
 
+    public synchronized static Icon getIcon(String iconName, int height, int width)
+            throws FileNotFoundException, NoSuchFieldException {
+        return ResourceManager.getIcon(iconName, height, width);
+    }
+
     public synchronized static String getLocalePhrase(String phrase, Locale locale){
         return ResourceManager.getLocalizedPhrase(phrase, locale);
     }
 
     public synchronized static AudioInputStream getSound(String name) {
         return ResourceManager.getSound(name);
+    }
+
+    @Nullable
+    public synchronized static Font getFont(String name){
+        return ResourceManager.getFont(name);
     }
 }

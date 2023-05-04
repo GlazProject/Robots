@@ -4,7 +4,7 @@ import ru.projectrobots.core.drawer.Drawer;
 import ru.projectrobots.di.container.GlobalSettings;
 import ru.projectrobots.game.model.Models;
 import ru.projectrobots.resources.Repository;
-import ru.projectrobots.game.view.GameView;
+import ru.projectrobots.game.view.GameFrame;
 
 import java.awt.*;
 import java.io.FileNotFoundException;
@@ -12,7 +12,7 @@ import java.io.FileNotFoundException;
 public class GroundDrawer extends Drawer {
     public static final String MODEL_NAME = Models.GROUND;
 
-    public void drawGround(Graphics2D g2d, GameView frame) throws FileNotFoundException, NoSuchFieldException {
+    public void drawGround(Graphics2D g2d, GameFrame frame) throws FileNotFoundException, NoSuchFieldException {
         int imageWidth = 250;
         int imageHeight = 250;
 

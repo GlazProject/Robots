@@ -17,32 +17,35 @@ import ru.projectrobots.game.model.Robot;
 import ru.projectrobots.game.model.Target;
 import ru.projectrobots.game.sound.Audio;
 import ru.projectrobots.game.sound.AudioPlayer;
-import ru.projectrobots.game.view.GameView;
+import ru.projectrobots.game.view.GameFrame;
 import ru.projectrobots.log.Logger;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.function.Consumer;
 
 public class GameViewModel {
 
     private final Robot robot;
     private final Target target;
     private final ArrayList<Fireball> fireballs;
-    private final GameView view;
+    private final GameFrame view;
 
     private final GameEventBus eventBus;
     private final CompositeDisposable disposable = new CompositeDisposable();
+    private final Consumer<GameEvent> applicationFrameListener;
 
-    public GameViewModel(GameDataContainer data, GameEventBus eventBus) {
+    public GameViewModel(GameDataContainer data, GameEventBus eventBus, Consumer<GameEvent> applicationFrameListener) {
         this.eventBus = eventBus;
+        this.applicationFrameListener = applicationFrameListener;
         GameUpdateGenerator updateGenerator = new GameUpdateGenerator(eventBus);
 
         robot = data.robot();
         target = data.target();
         fireballs = data.fireballs();
-        view = new GameView(data);
+        view = new GameFrame(data);
 
         updateGenerator.startUpdates();
         initUserEventListeners();
@@ -51,7 +54,7 @@ public class GameViewModel {
         AudioPlayer.loopBackgroundMusic(Audio.BACKGROUND_2);
     }
 
-    public GameView getView() {
+    public GameFrame getView() {
         return view;
     }
 
@@ -86,6 +89,7 @@ public class GameViewModel {
             case UPDATE_FIREBALL -> updateFireballs();
             case UPDATE_SETTING -> updateGlobalSettings(event.data());
             case TARGET_COLLECTED -> AudioPlayer.playCollectedSound();
+            case OPEN_LOG_WINDOW -> applicationFrameListener.accept(event);
         }
     }
 

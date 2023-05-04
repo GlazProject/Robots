@@ -12,13 +12,10 @@ import ru.projectrobots.game.model.Robot;
 import ru.projectrobots.game.model.Target;
 import ru.projectrobots.game.view.GameFrame;
 
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-
-import static ru.projectrobots.core.view.DialogFactory.showCloseDialog;
+import java.util.function.Consumer;
 
 public class GameFrameViewModel {
 
@@ -27,37 +24,30 @@ public class GameFrameViewModel {
 
     private final GameEventBus eventBus;
 
-    public GameFrameViewModel(GameDataContainer data, GameEventBus eventBus) {
+    public GameFrameViewModel(GameDataContainer data, GameEventBus eventBus,
+                              Consumer<GameEvent> applicationFrameListener) {
         this.eventBus = eventBus;
 
-        gameViewModel = new GameViewModel(data, eventBus);
-        view = createGameWindow(data.robot(), data.target());
+        gameViewModel = new GameViewModel(data, eventBus, applicationFrameListener);
+        view = createGameWindow(data.robot(), data.target(), new Dimension(600, 800));
     }
 
     public GameFrame getView() {
         return view;
     }
 
-    private GameFrame createGameWindow(Robot robot, Target target) {
-        robot.setBoardSize(600, 800);
-        target.setBoardSize(600, 800);
+    private GameFrame createGameWindow(Robot robot, Target target, Dimension size) {
+        robot.setBoardSize(size.width, size.height);
+        target.setBoardSize(size.width, size.height);
 
-        GameFrame gameWindow = new GameFrame(gameViewModel.getView());
-        gameWindow.setPreferredSize(new Dimension(600, 800));
+        GameFrame gameWindow = gameViewModel.getView();
+        gameWindow.setPreferredSize(size);
 
-        gameViewModel.getView().addExceptionListener(e -> {
+        gameWindow.addExceptionListener(e -> {
             eventBus.sendData(GameEvent.getEventWithoutData(GameEventType.GAME_CLOSED));
 
             DialogFactory.showErrorDialog(gameWindow, e);
             gameWindow.setIgnoreRepaint(true);
-        });
-
-        gameWindow.addInternalFrameListener(new InternalFrameAdapter() {
-            @Override
-            public void internalFrameClosing(InternalFrameEvent event) {
-                super.internalFrameClosing(event);
-                showCloseDialog(event, t -> eventBus.sendData(GameEvent.getEventWithoutData(GameEventType.GAME_CLOSED)));
-            }
         });
 
         gameWindow.addComponentListener(new ComponentAdapter() {

@@ -91,4 +91,33 @@ class ResourceProvider {
             return null;
         }
     }
+
+    @Nullable
+    public static Font getFont(String fontName) {
+        String font = String.format("fonts.%s", fontName);
+        String path = PropertiesProvider.getProperty(font, null);
+        float size = Integer.parseInt(PropertiesProvider.getProperty(font + ".size", "12"));
+
+        if (path == null) {
+            Logger.error("Can not get path for \"" + fontName + "\" font");
+            return null;
+        }
+
+        try {
+            return Font.createFont(Font.TRUETYPE_FONT, new File(path)).deriveFont(size);
+        } catch (FontFormatException e) {
+            Logger.error("Incorrect font format for \"" + path + "\" font");
+            return null;
+        } catch (IOException e) {
+            Logger.error("Can not read data from \"" + path + "\" font");
+            return null;
+        }
+    }
+
+    public static Icon getIcon(String iconName, int height, int width)
+            throws FileNotFoundException, NoSuchFieldException {
+        Image image = getImage(iconName, true, false);
+        Image scaledImage = image.getScaledInstance(width, height, Image.SCALE_FAST);
+        return new ImageIcon(scaledImage);
+    }
 }

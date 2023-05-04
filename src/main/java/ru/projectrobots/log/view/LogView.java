@@ -21,7 +21,7 @@ public class LogView extends JInternalFrame implements LogChangeListener {
     private final TextArea contentView;
 
     public LogView(LogDelegate _logDelegate) {
-        super(Repository.getLocalePhrase("log", GlobalSettings.getLocale()),
+        super(Repository.getLocalePhrase("log_window_name", GlobalSettings.getLocale()),
                 true, true, true, true);
 
         logDelegate = _logDelegate;
