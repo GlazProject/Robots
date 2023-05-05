@@ -11,18 +11,20 @@ import javax.swing.*;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import java.awt.*;
+import java.io.FileNotFoundException;
 
 import static ru.projectrobots.core.view.DialogFactory.showCloseDialog;
 
 
 public class LogView extends JInternalFrame implements LogChangeListener {
-
+    private static final String ICON = "game.log.icon";
     private final LogDelegate logDelegate;
     private final TextArea contentView;
 
     public LogView(LogDelegate _logDelegate) {
         super(Repository.getLocalePhrase("log_window_name", GlobalSettings.getLocale()),
                 true, true, true, true);
+        setIcon();
 
         logDelegate = _logDelegate;
         logDelegate.registerListener(this);
@@ -34,6 +36,13 @@ public class LogView extends JInternalFrame implements LogChangeListener {
         panel.add(contentView, BorderLayout.CENTER);
         getContentPane().add(panel);
         pack();
+    }
+
+    private void setIcon(){
+        try {
+            setFrameIcon(Repository.getIcon(ICON, 80, 80));
+        } catch (FileNotFoundException | NoSuchFieldException ignored) {
+        }
     }
 
     @Override

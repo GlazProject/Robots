@@ -14,8 +14,7 @@ public class BackgroundAudioSelectionPanel extends TransparentJPanel {
     public static final String SET_COMMAND = "set.music";
 
     public BackgroundAudioSelectionPanel(ActionListener actionListener) {
-        List<String> tracks = new java.util.ArrayList<>(Repository.getBackgroundTracks());
-        tracks.add("no_music");
+        List<String> tracks = Repository.getBackgroundTracks();
         int rows = Math.max(tracks.size() + 1, 5);
         setLayout(new GridLayout(rows, 1, 40, 20));
 

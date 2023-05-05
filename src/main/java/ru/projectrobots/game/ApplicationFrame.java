@@ -21,6 +21,7 @@ import java.util.function.Consumer;
 
 public class ApplicationFrame extends JFrame {
     private static final String BG_IMAGE = "ground.background";
+    private static final String ICON = "game.icon";
     private final LogView logWindow;
 
     public ApplicationFrame(GameDataContainer data, GameEventBus eventBus) {
@@ -35,6 +36,7 @@ public class ApplicationFrame extends JFrame {
 
         setBgImage(screenSize);
         setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
+        setIcon();
 
         ActionsFrame actionsFrame = new ActionFrameViewModel(eventBus).getView();
         addWindow(actionsFrame);
@@ -52,6 +54,13 @@ public class ApplicationFrame extends JFrame {
         gameFrame.requestFocusInWindow();
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+    }
+
+    private void setIcon(){
+        try {
+            setIconImage(Repository.getImage(ICON, false, false));
+        } catch (FileNotFoundException | NoSuchFieldException ignored) {
+        }
     }
 
     private void setBgImage(Dimension screenSize){
