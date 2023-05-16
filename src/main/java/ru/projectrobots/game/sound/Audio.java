@@ -6,6 +6,7 @@ public enum Audio {
     BACKGROUND_1("sounds.background1"),
     BACKGROUND_2("sounds.background2"),
     BACKGROUND_3("sounds.background3"),
+    NO_MUSIC("sounds.no_music"),
     FIREBALL("sounds.fireball"),
     COLLECTED("sounds.collected");
 

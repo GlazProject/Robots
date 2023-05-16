@@ -17,8 +17,8 @@ import java.util.ArrayList;
 public class RobotsProgram {
 
     public static void main(String[] args) {
-        Logger.setIgnoreDebugMessages(true);
         Repository.loadAllProperties("src/main/resources/properties");
+        Logger.setIgnoreDebugMessages(true);
 
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

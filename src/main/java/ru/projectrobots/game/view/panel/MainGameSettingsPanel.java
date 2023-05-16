@@ -1,5 +1,6 @@
 package ru.projectrobots.game.view.panel;
 
+import ru.projectrobots.core.view.TransparentJPanel;
 import ru.projectrobots.game.model.GameAction;
 import ru.projectrobots.game.view.panel.settings.BackgroundAudioSelectionPanel;
 import ru.projectrobots.game.view.panel.settings.EntityLooksSelectionPanel;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class MainGameSettingsPanel extends JPanel {
+public class MainGameSettingsPanel extends TransparentJPanel {
     private final CardLayout layout = new CardLayout();
     private final JPanel contentPane = this;
 
@@ -60,6 +61,7 @@ public class MainGameSettingsPanel extends JPanel {
             JPanel panel = new EntityLooksSelectionPanel(panelSwitchListener, entity);
             add(panel);
         }
+
         JPanel bgPanel = new BackgroundAudioSelectionPanel(panelSwitchListener);
         add(bgPanel);
     }

@@ -1,5 +1,7 @@
 package ru.projectrobots.resources;
 
+import org.jetbrains.annotations.Nullable;
+
 import javax.sound.sampled.AudioInputStream;
 import javax.swing.*;
 import java.awt.*;
@@ -46,4 +48,13 @@ class ResourceManager {
         return ResourceProvider.getSound(name);
     }
 
+    @Nullable
+    public static Font getFont(String name) {
+        return ResourceProvider.getFont(name);
+    }
+
+    public static Icon getIcon(String iconName, int height, int width)
+            throws FileNotFoundException, NoSuchFieldException {
+        return ResourceProvider.getIcon(iconName, height, width);
+    }
 }

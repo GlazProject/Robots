@@ -10,15 +10,11 @@ import ru.projectrobots.di.container.LookEntry;
 import ru.projectrobots.game.model.GameAction;
 import ru.projectrobots.game.view.ActionsFrame;
 
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Objects;
 import java.util.regex.Pattern;
-
-import static ru.projectrobots.core.view.DialogFactory.showCloseDialog;
 
 public class ActionFrameViewModel {
 
@@ -38,14 +34,6 @@ public class ActionFrameViewModel {
     private ActionsFrame getActionsView() {
         ActionsFrame actionsView = new ActionsFrame(actionListener);
         actionsView.setPreferredSize(new Dimension(250, 500));
-
-        actionsView.addInternalFrameListener(new InternalFrameAdapter() {
-            @Override
-            public void internalFrameClosing(InternalFrameEvent event) {
-                super.internalFrameClosing(event);
-                showCloseDialog(event, t -> {});
-            }
-        });
 
         return actionsView;
     }

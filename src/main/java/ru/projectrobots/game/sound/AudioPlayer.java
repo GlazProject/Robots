@@ -35,6 +35,9 @@ public class AudioPlayer {
             background.stop();
         }
 
+        if (track == Audio.NO_MUSIC)
+            return;
+
         try {
             background = AudioSystem.getClip();
             background.open(Repository.getSound(track.getResName()));

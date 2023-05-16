@@ -1,23 +1,25 @@
 package ru.projectrobots.game.view.panel.settings;
 
+import ru.projectrobots.core.view.GameJButton;
+import ru.projectrobots.core.view.TransparentJPanel;
 import ru.projectrobots.di.container.GlobalSettings;
 import ru.projectrobots.game.model.GameAction;
 import ru.projectrobots.resources.Repository;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-public class BackgroundAudioSelectionPanel extends JPanel {
+public class BackgroundAudioSelectionPanel extends TransparentJPanel {
     public static final String SET_COMMAND = "set.music";
 
     public BackgroundAudioSelectionPanel(ActionListener actionListener) {
         List<String> tracks = Repository.getBackgroundTracks();
-        setLayout(new GridLayout(tracks.size() + 1, 1, 40, 20));
+        int rows = Math.max(tracks.size() + 1, 5);
+        setLayout(new GridLayout(rows, 1, 40, 20));
 
         for (String track : tracks) {
-            JButton button = new JButton(Repository.getLocalePhrase(track, GlobalSettings.getLocale()));
+            GameJButton button = new GameJButton(Repository.getLocalePhrase(track, GlobalSettings.getLocale()));
             button.setBorderPainted(true);
 
             button.setActionCommand(String.join(".", SET_COMMAND, track));
@@ -25,7 +27,7 @@ public class BackgroundAudioSelectionPanel extends JPanel {
             add(button);
         }
 
-        JButton backBtn = new JButton(Repository.getLocalePhrase("back_to_menu", GlobalSettings.getLocale()));
+        GameJButton backBtn = new GameJButton(Repository.getLocalePhrase("back_to_menu", GlobalSettings.getLocale()));
         backBtn.setBorderPainted(true);
         backBtn.setActionCommand(GameAction.OPEN_SETTINGS.name());
         backBtn.addActionListener(actionListener);
